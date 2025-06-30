@@ -205,3 +205,48 @@ cython_debug/
 marimo/_static/
 marimo/_lsp/
 __marimo__/
+
+# ========================================
+# OPTIMIND SPECIFIC PROTECTIONS
+# ========================================
+
+# Streamlit specific
+.streamlit/secrets.toml
+.streamlit/secrets.json
+
+# OpenAI API keys and sensitive data
+*.env
+secrets.toml
+secrets.json
+
+# Project specific directories
+job_results/
+temp_models/
+cache/
+logs/
+temp/
+tmp/
+
+# Model files and large data
+*.pkl
+*.pickle
+*.joblib
+*.h5
+*.hdf5
+*.model
+models/
+data/
+
+# Database files
+*.db
+*.sqlite
+*.sqlite3
+
+# Backup files
+*.bak
+*.backup
+*~
+
+# IDE specific (uncomment if needed)
+# .vscode/
+# .idea/

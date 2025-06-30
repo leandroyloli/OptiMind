@@ -403,5 +403,5 @@ optimind/
 ---
 
 **Versão**: 1.0  
-**Data**: Janeiro 2024  
+**Data**: Junho 2025  
 **Status**: Contexto essencial para desenvolvimento 

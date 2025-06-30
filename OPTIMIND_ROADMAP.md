@@ -14,10 +14,10 @@ Criar a base mínima funcional com autenticação, configuração e deploy.
 ### 📝 Tarefas
 
 #### 1.1 Setup do Projeto
-- [ ] Criar repositório Git
-- [ ] Configurar ambiente virtual Python 3.9+
-- [ ] Criar estrutura de pastas básica
-- [ ] Configurar `.gitignore`
+- [x] Criar repositório Git
+- [x] Configurar ambiente virtual Python 3.9+
+- [x] Criar estrutura de pastas básica
+- [x] Configurar `.gitignore`
 
 #### 1.2 Autenticação Básica
 - [ ] Instalar `streamlit-authenticator`
@@ -554,5 +554,5 @@ Para avançar para o próximo bloco:
 ---
 
 **Versão**: 1.0  
-**Data**: Janeiro 2024  
+**Data**: Junho 2025  
 **Status**: Pronto para implementação 
