@@ -43,10 +43,13 @@ O **OptiMind** é uma plataforma de otimização assistida por IA que transforma
    - Suporte a solvers open-source (CBC, GLPK, HiGHS)
 
 4. **Camada de Segurança**
-   - Autenticação de usuários
+   - Autenticação robusta com senhas seguras (bcrypt)
+   - Validação de força de senha (12+ chars, maiúsculas, minúsculas, números, símbolos)
+   - Rate limiting de login (5 tentativas por IP, bloqueio de 5 minutos)
    - Proteção de chaves API via `st.secrets`
    - Execução sandboxed de código
-   - Rate limiting e monitoramento
+   - Logs de tentativas de login
+   - Arquivos sensíveis protegidos (.gitignore)
 
 ---
 
@@ -162,25 +165,28 @@ LOGIN → HOME → NOVO JOB → DEFINIÇÃO → REVISÃO → TIMELINE → RESULT
 
 ### 3.2 Páginas Principais
 
-#### 3.2.1 Página de Login
+#### 3.2.1 Página de Login ✅ **IMPLEMENTADO**
 ```python
-# app.py - Login
-import streamlit_authenticator as stauth
+# app.py - Login com sistema de segurança robusto
+from utils.auth import require_auth, logout
 
-authenticator = stauth.Authenticate(
-    names, usernames, hashed_passwords,
-    "optimind_cookie", "abcdef", cookie_expiry_days=1
-)
+# Verificar autenticação com rate limiting e validação
+name, username = require_auth()
 
-name, auth_status, _ = authenticator.login("OptiMind Login", "main")
-
-if auth_status == False:
-    st.error("Usuário/senha incorretos")
-    st.stop()
-elif auth_status == None:
-    st.warning("Por favor, insira suas credenciais")
-    st.stop()
+# Sistema de logout
+if st.sidebar.button("🚪 Logout"):
+    logout()
+    st.rerun()
 ```
+
+**Características de Segurança:**
+- Hash bcrypt com salt automático
+- Validação de força de senha (12+ chars, maiúsculas, minúsculas, números, símbolos)
+- Rate limiting (5 tentativas por IP, bloqueio de 5 minutos)
+- Logs de tentativas de login
+- Arquivos sensíveis protegidos (.gitignore)
+- Compatibilidade com streamlit-authenticator v0.4.2
+- Estrutura correta (cookie_key, session_state)
 
 #### 3.2.2 Home (Lista de Jobs)
 - Botão "Novo Job" proeminente
@@ -250,6 +256,10 @@ with col1:
 optimind/
 ├── app.py                          # Aplicação principal Streamlit
 ├── requirements.txt                # Dependências Python
+├── setup_dev_credentials.py        # Gerenciador de credenciais
+├── SECURITY.md                     # Credenciais (NÃO commitado)
+├── users.json                      # Dados de usuários (NÃO commitado)
+└── login_attempts.json             # Logs de segurança (NÃO commitado)
 ├── README.md                       # Documentação
 ├── LICENSE                         # Licença (MIT)
 ├── .streamlit/
@@ -520,10 +530,10 @@ executor_tool = CodeInterpreterTool(
 ```toml
 # .streamlit/config.toml
 [theme]
-primaryColor = "#FF6B6B"
-backgroundColor = "#FFFFFF"
-secondaryBackgroundColor = "#F0F2F6"
-textColor = "#262730"
+primaryColor="#020e66"
+backgroundColor="#f8fafc"
+secondaryBackgroundColor="#c8f0ff"
+textColor="#1f2937" 
 
 [server]
 maxUploadSize = 200

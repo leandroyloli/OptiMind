@@ -27,6 +27,11 @@ Este documento contém **contexto essencial** que não está nos outros MDs mas 
 - **Solução**: Validação rigorosa em cada etapa
 - **Benefício**: Detecta erros cedo, permite retry automático
 
+### 4. Por que Sistema de Autenticação Robusto?
+- **Problema**: Aplicações web precisam de segurança contra ataques
+- **Solução**: Autenticação com senhas seguras, rate limiting, validação de força
+- **Benefício**: Proteção contra força bruta, credenciais seguras, logs de segurança
+
 ---
 
 ## 🔧 Padrões de Implementação
@@ -79,6 +84,32 @@ def validate_stage_output(output, schema):
         return False, str(e)
 ```
 
+### 4. Padrão de Autenticação Segura ✅ **IMPLEMENTADO**
+```python
+# Sistema de autenticação com múltiplas camadas de segurança
+class AuthManager:
+    def __init__(self):
+        self.max_attempts = 5  # Rate limiting
+        self.lockout_duration = 300  # 5 minutos
+    
+    def validate_password_strength(self, password):
+        # Validação: 12+ chars, maiúsculas, minúsculas, números, símbolos
+        pass
+    
+    def is_ip_blocked(self, ip_address):
+        # Verifica se IP está bloqueado por tentativas excessivas
+        pass
+
+# Estrutura compatível com streamlit-authenticator v0.4.2
+authenticator = stauth.Authenticate(
+    credentials=credentials,
+    cookie_name="optimind_cookie",
+    cookie_key="abcdef",  # v0.4.2 usa cookie_key
+    location="main",
+    cookie_expiry_days=30
+)
+```
+
 ---
 
 ## 🎨 Decisões de UX/UI
@@ -117,11 +148,14 @@ executor_config = {
 - **Por usuário**: 50 chamadas por dia
 - **Por sessão**: 10 chamadas por hora
 - **Por IP**: 100 chamadas por dia (backup)
+- **Por login**: 5 tentativas por IP, bloqueio de 5 minutos
 
 ### 3. Proteção de Dados
 - **Nenhum dado persistido**: Tudo em session_state
 - **Logs anonimizados**: Sem dados pessoais
 - **Chaves nunca expostas**: Apenas no backend
+- **Senhas hasheadas**: bcrypt com salt automático
+- **Arquivos sensíveis**: users.json, login_attempts.json, SECURITY.md não commitados
 
 ---
 
@@ -321,6 +355,23 @@ enableCORS = false
 gatherUsageStats = false
 ```
 
+### 3. Configuração de Segurança
+```toml
+# .streamlit/secrets.toml (NÃO commitado)
+[OPENAI]
+api_key = "sua-chave-openai"
+
+[USERS]
+admin_password_hash = "$2b$12$..."
+demo_password_hash = "$2b$12$..."
+
+[LIMITS]
+max_calls_per_day = 50
+max_calls_per_hour = 10
+max_login_attempts = 5
+lockout_duration = 300
+```
+
 ### 3. Estrutura de Pastas
 ```
 optimind/
@@ -331,7 +382,11 @@ optimind/
 ├── utils/                    # Funções auxiliares
 ├── tests/                    # Testes
 ├── examples/                 # Exemplos de problemas
-└── .streamlit/              # Configurações
+├── .streamlit/              # Configurações
+├── setup_dev_credentials.py # Gerenciador de credenciais
+├── SECURITY.md              # Credenciais (NÃO commitado)
+├── users.json               # Dados de usuários (NÃO commitado)
+└── login_attempts.json      # Logs de segurança (NÃO commitado)
 ```
 
 ---

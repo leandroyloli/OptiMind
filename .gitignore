@@ -214,6 +214,11 @@ __marimo__/
 .streamlit/secrets.toml
 .streamlit/secrets.json
 
+# Security files (não commitar dados de usuários e tentativas de login)
+users.json
+login_attempts.json
+SECURITY.md
+
 # OpenAI API keys and sensitive data
 *.env
 secrets.toml
