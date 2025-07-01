@@ -83,10 +83,10 @@ Criar a base mínima funcional com autenticação robusta, configuração e depl
 - [X] Gestao de usuario para adicionar e retirar user quando for admin
 
 #### 1.4 Configuração de Secrets
-- [ ] Configurar `.streamlit/secrets.toml`
-- [ ] Implementar validação da chave OpenAI
-- [ ] Testar conexão com OpenAI API
-- [ ] Configurar rate limiting básico
+- [x] Configurar `.streamlit/secrets.toml`
+- [x] Implementar validação da chave OpenAI
+- [x] Testar conexão com OpenAI API
+- [x] Configurar rate limiting básico
 
 #### 1.5 Deploy Inicial
 - [x] Criar `requirements.txt` básico

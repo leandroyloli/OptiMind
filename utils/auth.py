@@ -354,4 +354,24 @@ def require_auth():
         return name, username
     
     # If we got here, still not authenticated
-    st.stop() 
+    st.stop()
+
+def check_openai_rate_limit():
+    """
+    Permite até 1000 requisições à OpenAI a cada 5 minutos por usuário (session_state).
+    Retorna (permitido: bool, tempo_restante_segundos: int)
+    """
+    import time
+    max_requests = 1000
+    window_seconds = 5 * 60  # 5 minutos
+    now = int(time.time())
+    key = "openai_requests"
+    if key not in st.session_state:
+        st.session_state[key] = []
+    # Remove timestamps fora da janela
+    st.session_state[key] = [t for t in st.session_state[key] if now - t < window_seconds]
+    if len(st.session_state[key]) >= max_requests:
+        tempo_restante = window_seconds - (now - st.session_state[key][0])
+        return False, tempo_restante
+    st.session_state[key].append(now)
+    return True, 0 

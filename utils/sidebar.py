@@ -51,10 +51,12 @@ def create_sidebar():
     </div>
     """, unsafe_allow_html=True)
     
-    # Botão de gestão de usuários (apenas para admin)
+    # User management button (admin only)
     if username == "admin":
-        if st.sidebar.button("👤 Gestão de Usuários", use_container_width=True):
-            st.switch_page("pages/gestao_usuarios.py")
+        if st.sidebar.button("👤 User Management", use_container_width=True):
+            st.switch_page("pages/3_UserManagement.py")
+        if st.sidebar.button("🛠️ Admin Tools", use_container_width=True):
+            st.switch_page("pages/2_AdminTools.py")
     
     # Navigation buttons - clean
     if st.sidebar.button("🏠 Home", use_container_width=True, type="primary"):
