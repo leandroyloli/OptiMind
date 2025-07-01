@@ -110,6 +110,42 @@ authenticator = stauth.Authenticate(
 )
 ```
 
+### 5. Padrão de Interface de Entrada ✅ **IMPLEMENTADO**
+```python
+# Interface de entrada com validação expandida
+def validate_problem_input(text, objective):
+    """Validação local antes de enviar para agente"""
+    errors = []
+    
+    # Validações básicas
+    if not text.strip():
+        errors.append("Descrição do problema não pode estar vazia")
+    
+    # Validação de palavras-chave
+    keywords = ["maximizar", "minimizar", "maximize", "minimize"]
+    if not any(keyword in text.lower() for keyword in keywords):
+        errors.append("Adicione 'maximizar' ou 'minimizar' ao seu problema")
+    
+    # Validação de restrições de negócio
+    business_constraints = ["at least", "maintain", "balance", "pelo menos", "manter", "equilibrar"]
+    if any(constraint in text.lower() for constraint in business_constraints):
+        # Restrições de negócio detectadas - OK
+        pass
+    
+    return {
+        "is_valid": len(errors) == 0,
+        "errors": errors,
+        "suggestions": generate_suggestions(text, objective)
+    }
+
+# Interface implementada em pages/d_NewJob.py
+st.text_area(
+    "Descreva seu problema de otimização:",
+    placeholder="Ex: Maximizar lucro vendendo produtos A e B...",
+    height=400  # Interface adaptativa
+)
+```
+
 ---
 
 ## 🎨 Decisões de UX/UI
@@ -185,7 +221,7 @@ def track_cost(user_id, tokens_used, model):
 
 ## 🧪 Decisões de Testes
 
-### 1. Casos de Teste Essenciais
+### 1. Casos de Teste Essenciais ✅ **IMPLEMENTADO**
 ```python
 # Problemas que DEVEM funcionar
 test_cases = [
@@ -195,6 +231,14 @@ test_cases = [
     "Invalid input: Hello world",  # Deve ser rejeitado
     "Maximize x + y with x + y <= 5, x >= 10",  # Inviável
 ]
+
+# Testes implementados em tests/test_input_interface.py
+# 16 testes cobrindo:
+# - Validação de input vazio
+# - Validação de palavras-chave
+# - Validação de restrições de negócio
+# - Casos extremos e edge cases
+# - Tipos de retorno das funções
 ```
 
 ### 2. Validação de Schemas
@@ -372,21 +416,36 @@ max_login_attempts = 5
 lockout_duration = 300
 ```
 
-### 3. Estrutura de Pastas
+### 3. Estrutura de Pastas ✅ **ATUALIZADA**
 ```
 optimind/
-├── app.py                    # Entry point
-├── agents/                   # Todos os agentes
-├── schemas/                  # JSON schemas
-├── prompts/                  # Prompt templates
-├── utils/                    # Funções auxiliares
-├── tests/                    # Testes
-├── examples/                 # Exemplos de problemas
-├── .streamlit/              # Configurações
-├── setup_dev_credentials.py # Gerenciador de credenciais
-├── SECURITY.md              # Credenciais (NÃO commitado)
-├── users.json               # Dados de usuários (NÃO commitado)
-└── login_attempts.json      # Logs de segurança (NÃO commitado)
+├── app.py                    # Entry point ✅
+├── pages/                    # Páginas Streamlit ✅
+│   ├── __init__.py          # Inicialização das páginas ✅
+│   ├── a_Home.py            # Página inicial ✅
+│   ├── b_AdminTools.py      # Ferramentas administrativas ✅
+│   ├── c_UserManagement.py  # Gerenciamento de usuários ✅
+│   ├── d_NewJob.py          # Interface de entrada ✅
+│   └── e_History.py         # Histórico de jobs ✅
+├── agents/                   # Todos os agentes (próximo bloco)
+├── schemas/                  # JSON schemas (próximo bloco)
+├── prompts/                  # Prompt templates (próximo bloco)
+├── utils/                    # Funções auxiliares ✅
+│   ├── __init__.py          # Inicialização utils ✅
+│   ├── auth.py              # Autenticação ✅
+│   ├── sidebar.py           # Sidebar ✅
+│   └── validators.py        # Validação ✅
+├── tests/                    # Testes ✅
+│   ├── test_app_online.py   # Testes de app online ✅
+│   ├── test_auth.py         # Testes de autenticação ✅
+│   ├── test_input_interface.py # Testes da interface ✅
+│   └── test_openai_secrets.py  # Testes de secrets ✅
+├── examples/                 # Exemplos de problemas (próximo bloco)
+├── .streamlit/              # Configurações ✅
+├── setup_dev_credentials.py # Gerenciador de credenciais ✅
+├── SECURITY.md              # Credenciais (NÃO commitado) ✅
+├── users.json               # Dados de usuários (NÃO commitado) ✅
+└── login_attempts.json      # Logs de segurança (NÃO commitado) ✅
 ```
 
 ---
@@ -440,7 +499,7 @@ optimind/
 - [ ] Verificar estado atual do projeto
 - [ ] Validar configurações de ambiente
 - [ ] Testar conexões (OpenAI, Streamlit)
-- [ ] Revisar último bloco implementado
+- [ ] Revisar último bloco implementado (Bloco 2 concluído)
 
 ### Durante Desenvolvimento
 - [ ] Seguir padrões estabelecidos
@@ -457,6 +516,6 @@ optimind/
 
 ---
 
-**Versão**: 1.0  
-**Data**: Junho 2025  
-**Status**: Contexto essencial para desenvolvimento 
+**Versão**: 1.1  
+**Data**: Julho 2025  
+**Status**: Contexto essencial para desenvolvimento - Bloco 2 concluído 

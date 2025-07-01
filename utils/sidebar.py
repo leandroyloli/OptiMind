@@ -54,21 +54,19 @@ def create_sidebar():
     # User management button (admin only)
     if username == "admin":
         if st.sidebar.button("👤 User Management", use_container_width=True):
-            st.switch_page("pages/3_UserManagement.py")
+            st.switch_page("pages/c_UserManagement.py")
         if st.sidebar.button("🛠️ Admin Tools", use_container_width=True):
-            st.switch_page("pages/2_AdminTools.py")
+            st.switch_page("pages/b_AdminTools.py")
     
     # Navigation buttons - clean
     if st.sidebar.button("🏠 Home", use_container_width=True, type="primary"):
-        st.switch_page("pages/1_Home.py")
+        st.switch_page("pages/a_Home.py")
     
     if st.sidebar.button("🚀 New Job", use_container_width=True):
-        st.info("🔄 Redirecting to optimization interface...")
-        # TODO: Implement new job page
+        st.switch_page("pages/d_NewJob.py")
     
     if st.sidebar.button("📊 History", use_container_width=True):
-        st.info("🔄 Redirecting to history...")
-        # TODO: Implement history page
+        st.switch_page("pages/e_History.py")
     
     # Logout button - clean
     st.sidebar.markdown("---")

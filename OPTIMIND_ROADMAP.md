@@ -131,58 +131,70 @@ def test_bloco_1():
 
 ---
 
-## 📋 Bloco 2: Interface de Entrada (Semana 2)
+## 📋 Bloco 2: Interface de Entrada (Semana 2) ✅ **CONCLUÍDO**
 
 ### 🎯 Objetivo
 Implementar interface para entrada de problemas de otimização.
 
 ### 📝 Tarefas
 
-#### 2.1 Página de Definição de Problema
-- [ ] Criar formulário de entrada de texto
-- [ ] Adicionar seleção Maximizar/Minimizar
-- [ ] Implementar validação básica de input
-- [ ] Adicionar exemplos e placeholder
+#### 2.1 Página de Definição de Problema ✅ **CONCLUÍDO**
+- [x] Criar formulário de entrada de texto
+- [x] Adicionar seleção Maximizar/Minimizar
+- [x] Implementar validação básica de input
+- [x] Adicionar exemplos e placeholder
+- [x] Interface adaptativa com altura de 400px
+- [x] Explicação sobre interação com Meaning Agent
 
-#### 2.2 Navegação entre Páginas
-- [ ] Implementar sistema de páginas Streamlit
-- [ ] Criar fluxo: Home → Novo Job → Definição
-- [ ] Adicionar breadcrumbs/navegação
-- [ ] Testar transições entre páginas
+#### 2.2 Navegação entre Páginas ✅ **CONCLUÍDO**
+- [x] Implementar sistema de páginas Streamlit
+- [x] Criar fluxo: Home → Novo Job → Definição
+- [x] Adicionar breadcrumbs/navegação
+- [x] Testar transições entre páginas
+- [x] Renomeação de páginas para prefixo alfabético (a_, b_, c_, d_, e_)
 
-#### 2.3 Validação de Input
-- [ ] Implementar validação de texto não vazio
-- [ ] Detectar palavras-chave (maximizar, minimizar)
-- [ ] Validar formato básico do problema
-- [ ] Mostrar mensagens de erro amigáveis
+#### 2.3 Validação de Input ✅ **CONCLUÍDO**
+- [x] Implementar validação de texto não vazio
+- [x] Detectar palavras-chave (maximizar, minimizar)
+- [x] Validar formato básico do problema
+- [x] Mostrar mensagens de erro amigáveis
+- [x] Validação expandida para restrições de negócio (at least, maintain, balance, etc.)
+- [x] Remoção de validação de sucesso (delegada para agente)
 
-#### 2.4 Estado da Aplicação
-- [ ] Implementar `st.session_state` para dados
-- [ ] Persistir dados entre páginas
-- [ ] Limpar estado ao iniciar novo job
-- [ ] Testar persistência de dados
+#### 2.4 Estado da Aplicação ✅ **CONCLUÍDO**
+- [x] Implementar `st.session_state` para dados
+- [x] Persistir dados entre páginas
+- [x] Limpar estado ao iniciar novo job
+- [x] Testar persistência de dados
 
-### ✅ Critérios de Sucesso (Testes)
+### ✅ Critérios de Sucesso (Testes) ✅ **CONCLUÍDO**
 ```python
 def test_bloco_2():
-    # 1. Interface de entrada funciona
+    # 1. Interface de entrada funciona ✅
     assert can_input_problem_text() == True
     assert can_select_maximize_minimize() == True
     
-    # 2. Validação funciona
+    # 2. Validação funciona ✅
     assert validates_empty_input() == True
     assert validates_optimization_keywords() == True
+    assert validates_business_constraints() == True  # Nova funcionalidade
     
-    # 3. Navegação funciona
+    # 3. Navegação funciona ✅
     assert can_navigate_between_pages() == True
     assert state_persists_between_pages() == True
+    
+    # 4. Testes automatizados ✅
+    assert run_input_interface_tests() == "16 passed"  # python -m pytest tests/test_input_interface.py
 ```
 
-### 🚀 Resultado Esperado
+### 🚀 Resultado Esperado ✅ **CONCLUÍDO**
 - Interface completa para entrada de problemas
 - Validação básica funcionando
 - Navegação fluida entre páginas
 - Estado da aplicação gerenciado
+- **Suite de testes robusta (16 testes passando)**
+- **Validação expandida para restrições de negócio**
+- **Interface otimizada para interação com Meaning Agent**
 
 ---
 
@@ -614,6 +626,6 @@ Para avançar para o próximo bloco:
 
 ---
 
-**Versão**: 1.0  
-**Data**: Junho 2025  
-**Status**: Pronto para implementação 
+**Versão**: 1.1  
+**Data**: Julho 2025  
+**Status**: Pronto para implementação - Bloco 2 concluído 

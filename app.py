@@ -54,7 +54,7 @@ def main():
         <h1>🧠 OptiMind</h1>
         <h2 style="color: #7f8c8d;">AI-Powered Optimization Platform</h2>
         <p style="font-size: 1.2rem; margin-top: 2rem;">
-            Welcome to OptiMind! Use the sidebar to navigate through the platform.
+            Welcome to OptiMind! Use the sidebar to navigate through the platform
         </p>
     </div>
     """, unsafe_allow_html=True)

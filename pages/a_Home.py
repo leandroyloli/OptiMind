@@ -109,8 +109,7 @@ def main():
     col1, col2, col3 = st.columns([1, 2, 1])
     with col2:
         if st.button("🚀 Start New Optimization Job", type="primary", use_container_width=True, key="new_job_btn"):
-            st.info("🔄 Redirecting to optimization interface...")
-            # TODO: Navigate to optimization page when implemented
+            st.switch_page("pages/d_NewJob.py")
     
     st.divider()
     

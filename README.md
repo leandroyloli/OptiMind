@@ -143,13 +143,20 @@ python setup_dev_credentials.py
 
 ```
 OptiMind/
-├── app.py                          # Aplicação principal
-├── requirements.txt                # Dependências Python
-├── README.md                       # Este arquivo
+├── app.py                          # Aplicação principal ✅
+├── requirements.txt                # Dependências Python ✅
+├── README.md                       # Este arquivo ✅
 ├── .streamlit/
-│   ├── config.toml                # Configurações Streamlit
-│   └── secrets.toml               # Secrets (não commitado)
-├── agents/                        # Agentes especializados
+│   ├── config.toml                # Configurações Streamlit ✅
+│   └── secrets.toml               # Secrets (não commitado) ✅
+├── pages/                          # Páginas Streamlit ✅
+│   ├── __init__.py                # Inicialização das páginas ✅
+│   ├── a_Home.py                  # Página inicial ✅
+│   ├── b_AdminTools.py            # Ferramentas administrativas ✅
+│   ├── c_UserManagement.py        # Gerenciamento de usuários ✅
+│   ├── d_NewJob.py                # Interface de entrada ✅
+│   └── e_History.py               # Histórico de jobs ✅
+├── agents/                        # Agentes especializados (próximo bloco)
 │   ├── __init__.py
 │   ├── base_agent.py
 │   ├── meaning_agent.py
@@ -158,25 +165,27 @@ OptiMind/
 │   ├── formulador_agent.py
 │   ├── executor_agent.py
 │   └── interpretador_agent.py
-├── schemas/                       # Schemas JSON
+├── schemas/                       # Schemas JSON (próximo bloco)
 │   ├── __init__.py
 │   ├── problem_schema.json
 │   ├── model_schema.json
 │   └── result_schema.json
-├── prompts/                       # Prompts dos agentes
+├── prompts/                       # Prompts dos agentes (próximo bloco)
 │   ├── meaning.txt
 │   ├── pesquisador.txt
 │   ├── matematico.txt
 │   └── formulador.txt
-├── utils/                         # Utilitários
-│   ├── __init__.py
-│   ├── auth.py                   # Autenticação
-│   └── validators.py             # Validadores
-├── tests/                         # Testes
-│   ├── __init__.py
-│   ├── test_agents.py
-│   └── test_schemas.py
-└── examples/                      # Exemplos de uso
+├── utils/                         # Utilitários ✅
+│   ├── __init__.py               # Inicialização utils ✅
+│   ├── auth.py                   # Autenticação ✅
+│   ├── sidebar.py                # Sidebar ✅
+│   └── validators.py             # Validadores ✅
+├── tests/                         # Testes ✅
+│   ├── test_app_online.py        # Testes de app online ✅
+│   ├── test_auth.py              # Testes de autenticação ✅
+│   ├── test_input_interface.py   # Testes da interface de entrada ✅
+│   └── test_openai_secrets.py    # Testes de secrets ✅
+└── examples/                      # Exemplos de uso (próximo bloco)
     ├── linear_programming.py
     └── mixed_integer.py
 ```
@@ -216,10 +225,12 @@ pytest tests/ -v
 
 ### Cobertura de Testes
 
-- **14 testes** cobrindo todas as funcionalidades críticas
+- **30+ testes** cobrindo todas as funcionalidades críticas
 - **Testes unitários** para cada componente
 - **Testes de integração** para fluxos completos
 - **Testes de segurança** para validação de senhas e rate limiting
+- **Testes da interface de entrada** (16 testes específicos)
+- **Testes de autenticação** (14 testes robustos)
 
 ## 🚀 Deploy
 
@@ -255,6 +266,11 @@ MAX_CALLS_PER_HOUR = 10
 - ✅ Deploy inicial realizado com sucesso na Streamlit Cloud (https://optimind.streamlit.app/)
 - ✅ Configuração de secrets concluída
 - ✅ Bloco 1 (Fundação Básica) 100% concluído
+- ✅ Bloco 2 (Interface de Entrada) 100% concluído
+- ✅ Interface de entrada com validação expandida implementada
+- ✅ Suite de testes robusta (16 testes passando)
+- ✅ Navegação entre páginas funcionando
+- ✅ Estado da aplicação gerenciado
 
 ## 📚 Documentação
 
@@ -281,7 +297,7 @@ Para suporte, abra uma issue no GitHub ou entre em contato através do email: su
 ## 🔄 Roadmap
 
 - [x] Bloco 1: Fundação Básica (Autenticação)
-- [ ] Bloco 2: Interface de Entrada
+- [x] Bloco 2: Interface de Entrada ✅ **CONCLUÍDO**
 - [ ] Bloco 3: Agente Meaning
 - [ ] Bloco 4: Revisão e Confirmação
 - [ ] Bloco 5: Pipeline Completo
