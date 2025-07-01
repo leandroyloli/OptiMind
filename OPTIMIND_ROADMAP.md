@@ -131,7 +131,7 @@ def test_bloco_1():
 
 ---
 
-## 📋 Bloco 2: Interface de Entrada (Semana 2) ✅ **CONCLUÍDO**
+## 📋 Bloco 2: Interface de Entrada ✅ **CONCLUÍDO**
 
 ### 🎯 Objetivo
 Implementar interface para entrada de problemas de otimização.
