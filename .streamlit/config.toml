@@ -12,7 +12,7 @@ gatherUsageStats = false
 
 [theme]
 primaryColor="#020e66"
-backgroundColor="#f8fafc"
+backgroundColor="#E5F5FF"
 secondaryBackgroundColor="#c8f0ff"
 textColor="#1f2937" 
 font = "sans serif"

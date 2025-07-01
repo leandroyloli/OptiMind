@@ -71,20 +71,16 @@ Criar a base mínima funcional com autenticação robusta, configuração e depl
 - [x] **Mostrar simplicidade para usuário vs complexidade interna**
 - [x] **Destacar problemas PhD-level resolvidos**
 - [x] **Incluir mensagem de democratização de soluções avançadas**
-
-#### 1.3.1 Sidebar e Gestão de Usuário ✅ **CONCLUÍDO**
 - [x] Implementar sidebar bonito e funcional
 - [x] Adicionar header com nome do app (OptiMind)
-- [x] Criar seção de informações do usuário
 - [x] Implementar navegação principal (Home, Novo Job, Histórico)
-- [x] Adicionar seção de configurações (Perfil, Preferências)
-- [x] Incluir seção de ajuda (Documentação, Suporte)
 - [x] Implementar botão de logout funcional
 - [x] Adicionar footer com branding Mirow & Co.
 - [x] Aplicar CSS customizado para design moderno
 - [x] Integrar sidebar em todas as páginas principais
 - [x] Testar funcionalidade de logout
 - [x] Validar navegação entre seções
+- [X] Gestao de usuario para adicionar e retirar user quando for admin
 
 #### 1.4 Configuração de Secrets
 - [ ] Configurar `.streamlit/secrets.toml`

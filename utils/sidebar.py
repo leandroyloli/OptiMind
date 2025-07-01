@@ -9,6 +9,9 @@ from utils.auth import logout
 def create_sidebar():
     """Creates the sidebar with user management - reusable across all pages"""
     
+    # Recupera o usuário logado
+    username = st.session_state.get("username")
+    
     # Custom CSS for sidebar - clean and minimalist
     st.markdown("""
     <style>
@@ -47,6 +50,11 @@ def create_sidebar():
         <p style="font-size: 0.8rem; color: #888; margin: 0.5rem 0 0 0;">AI-Powered Optimization</p>
     </div>
     """, unsafe_allow_html=True)
+    
+    # Botão de gestão de usuários (apenas para admin)
+    if username == "admin":
+        if st.sidebar.button("👤 Gestão de Usuários", use_container_width=True):
+            st.switch_page("pages/gestao_usuarios.py")
     
     # Navigation buttons - clean
     if st.sidebar.button("🏠 Home", use_container_width=True, type="primary"):
