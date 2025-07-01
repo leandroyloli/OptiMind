@@ -64,31 +64,37 @@ class TestAuthManager:
         weak_password = "Short1!aA"
         is_strong, message = temp_auth_manager.validate_password_strength(weak_password)
         assert not is_strong
-        assert "12 caracteres" in message
+        assert "12 characters" in message
         
         # Senha fraca - sem maiúsculas
-        weak_password = "password123!a@"  # 13 chars
+        weak_password = "alllowercase123!"
         is_strong, message = temp_auth_manager.validate_password_strength(weak_password)
         assert not is_strong
-        assert "maiúscula" in message
+        assert "uppercase" in message
         
         # Senha fraca - sem minúsculas
+        weak_password = "ALLUPPERCASE123!"
+        is_strong, message = temp_auth_manager.validate_password_strength(weak_password)
+        assert not is_strong
+        assert "lowercase" in message
+        
+        # Senha fraca - sem números
         weak_password = "PASSWORD123!@#"  # 13 chars
         is_strong, message = temp_auth_manager.validate_password_strength(weak_password)
         assert not is_strong
-        assert "minúscula" in message
+        assert "lowercase" in message
         
         # Senha fraca - sem números
         weak_password = "Password!@#abc"  # 14 chars
         is_strong, message = temp_auth_manager.validate_password_strength(weak_password)
         assert not is_strong
-        assert "número" in message
+        assert "number" in message
         
         # Senha fraca - sem símbolos
         weak_password = "Password123abc"  # 14 chars
         is_strong, message = temp_auth_manager.validate_password_strength(weak_password)
         assert not is_strong
-        assert "caractere especial" in message
+        assert "special character" in message
     
     def test_add_user(self, temp_auth_manager):
         """Testar adição de usuários"""
@@ -101,12 +107,12 @@ class TestAuthManager:
         # Tentar adicionar usuário que já existe
         success, message = temp_auth_manager.add_user("testuser", "Another User", "AnotherPass123!")
         assert not success
-        assert "já existe" in message
+        assert "already exists" in message
         
         # Tentar adicionar usuário com senha fraca
-        success, message = temp_auth_manager.add_user("weakuser", "Weak User", "weakweakweak1!")
+        success, message = temp_auth_manager.add_user("weakuser", "Weak User", "weakpass")
         assert not success
-        assert "fraca" in message
+        assert "Weak password" in message
     
     def test_remove_user(self, temp_auth_manager):
         """Testar remoção de usuários"""

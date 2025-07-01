@@ -6,7 +6,7 @@ Este roadmap divide o desenvolvimento do OptiMind em **blocos lógicos e testáv
 
 ---
 
-## 📋 Bloco 1: Fundação Básica (Semana 1)
+## 📋 Bloco 1: Fundação Básica 
 
 ### 🎯 Objetivo
 Criar a base mínima funcional com autenticação robusta, configuração e deploy.
@@ -42,22 +42,16 @@ Criar a base mínima funcional com autenticação robusta, configuração e depl
 - [x] Implementar estrutura correta (cookie_key, session_state)
 - [x] Testar login/logout completo
 
-#### 1.2.1 Testes Robustos de Autenticação ✅ **CONCLUÍDO**
-- [x] Criar suite completa de testes (`tests/test_auth.py`)
-- [x] Implementar testes unitários para todas as funcionalidades
-- [x] Testar hash e verificação de senhas (bcrypt)
-- [x] Testar validação de força de senha (12+ chars, maiúsculas, minúsculas, números, símbolos)
-- [x] Testar criação e remoção de usuários
-- [x] Testar rate limiting (5 tentativas por IP, bloqueio de 5 minutos)
-- [x] Testar obtenção e listagem de usuários
-- [x] Testar integração com Streamlit (mocks)
-- [x] Criar script de execução de testes (`run_tests.py`)
-- [x] Implementar testes com fixtures pytest para ambiente limpo
-- [x] Garantir 100% de cobertura das funcionalidades críticas
-- [x] Validar que testes usam as mesmas funções do app real
-- [x] **Resultado**: 11 testes passando, 3 pulados (integração Streamlit)
+#### 1.3 Testes Robustos de Autenticação e Integração ✅ **CONCLUÍDO**
+- [x] Suite completa de testes automatizados (`tests/`)
+- [x] Testes unitários: autenticação, hash e verificação de senha, força de senha, criação/remoção/listagem de usuários, rate limiting
+- [x] Teste de integração: conexão com OpenAI (mesma lógica do AdminTools)
+- [x] Teste de status do app online (requisição HTTP)
+- [x] Script único (`run_tests.py`) executa todos os testes automaticamente
+- [x] Cobertura 100% das funcionalidades críticas do Bloco 1
+- [x] Testes usam as mesmas funções e fluxos do app real
 
-#### 1.3 Página Inicial ✅ **CONCLUÍDO**
+#### 1.4 Página Inicial ✅ **CONCLUÍDO**
 - [x] Criar página Home com descrição do OptiMind
 - [x] Adicionar botão "Novo Job" (ainda não funcional)
 - [x] Implementar design moderno e light em inglês
@@ -66,11 +60,11 @@ Criar a base mínima funcional com autenticação robusta, configuração e depl
 - [x] Incluir algoritmos técnicos detalhados
 - [x] Explicar arquitetura técnica e agentes
 - [x] Adicionar logo centralizado no final
-- [x] **Implementar storytelling focado na dor dos consultores**
-- [x] **Adicionar casos de sucesso da Mirow Co com métricas reais**
-- [x] **Mostrar simplicidade para usuário vs complexidade interna**
-- [x] **Destacar problemas PhD-level resolvidos**
-- [x] **Incluir mensagem de democratização de soluções avançadas**
+- [x] Implementar storytelling focado na dor dos consultores
+- [x] Adicionar casos de sucesso da Mirow Co com métricas reais
+- [x] Mostrar simplicidade para usuário vs complexidade interna
+- [x] Destacar problemas PhD-level resolvidos
+- [x] Incluir mensagem de democratização de soluções avançadas
 - [x] Implementar sidebar bonito e funcional
 - [x] Adicionar header com nome do app (OptiMind)
 - [x] Implementar navegação principal (Home, Novo Job, Histórico)
@@ -82,42 +76,43 @@ Criar a base mínima funcional com autenticação robusta, configuração e depl
 - [x] Validar navegação entre seções
 - [X] Gestao de usuario para adicionar e retirar user quando for admin
 
-#### 1.4 Configuração de Secrets
+#### 1.5 Configuração de Secrets
 - [x] Configurar `.streamlit/secrets.toml`
 - [x] Implementar validação da chave OpenAI
 - [x] Testar conexão com OpenAI API
 - [x] Configurar rate limiting básico
 
-#### 1.5 Deploy Inicial
+#### 1.6 Deploy Inicial
 - [x] Criar `requirements.txt` básico
 - [x] Configurar `.streamlit/config.toml`
-- [ ] Deploy no Streamlit Community Cloud
-- [ ] Configurar secrets na Cloud
-- [ ] Testar deploy completo
+- [x] Deploy no Streamlit Community Cloud
+- [x] Configurar secrets na Cloud
+- [x] Testar deploy completo
 
 ### ✅ Critérios de Sucesso (Testes)
 ```python
-# Testes para validar Bloco 1
 def test_bloco_1():
-    # 1. Autenticação funciona
+    # 1. Autenticação e segurança
     assert login_successful("admin", "password") == True
     assert login_failed("wrong", "credentials") == False
-    
-    # 2. Segurança implementada
     assert password_strength_validation_works() == True
     assert rate_limiting_works() == True
     assert sensitive_files_protected() == True
-    
-    # 3. Secrets configurados
+    assert user_creation_and_removal_works() == True
+    assert user_listing_works() == True
+
+    # 2. Secrets e integração externa
     assert openai_api_key_is_valid() == True
+    assert openai_connection_works() == True  # Teste real de conexão com OpenAI
     assert secrets_not_exposed_in_frontend() == True
-    
-    # 4. Deploy funcional
+
+    # 3. Deploy e operação
     assert app_loads_without_errors() == True
     assert authentication_works_in_production() == True
-    
-    # 5. Testes robustos implementados ✅
-    assert run_tests() == "11 passed, 3 skipped"  # python run_tests.py
+    assert app_status_online() == True  # Teste HTTP de status do app
+
+    # 4. Testes automatizados robustos
+    assert run_tests() == "12 passed, 3 skipped"  # python run_tests.py
     assert test_coverage_auth() == "100%"  # Todas funcionalidades críticas testadas
     assert tests_use_real_functions() == True  # Testes usam código real do app
 ```
@@ -129,7 +124,7 @@ def test_bloco_1():
 - Arquivos sensíveis protegidos
 - Chave OpenAI validada e funcionando
 - Deploy no Streamlit Cloud operacional
-- **Suite completa de testes robustos** (11 testes passando)
+- **Suite completa de testes robustos** (12 testes passando)
 - **Cobertura 100% das funcionalidades críticas**
 - **Testes validam código real do app**
 - Base sólida para próximos blocos
@@ -528,7 +523,6 @@ def test_bloco_8():
     assert monitoring_configured() == True
     assert documentation_complete() == True
 ```
-
 ### 🚀 Resultado Esperado
 - Aplicação otimizada e robusta
 - Tratamento completo de erros

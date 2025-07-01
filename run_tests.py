@@ -8,54 +8,28 @@ import sys
 import os
 
 def run_tests():
-    """Executar todos os testes de autenticação"""
-    print("🧪 Executando testes do sistema de autenticação do OptiMind...")
+    """Executar todos os testes automatizados do projeto (pasta tests)"""
+    print("🧪 Executando todos os testes do OptiMind...")
     print("=" * 60)
-    
-    # Verificar se pytest está instalado
     try:
         import pytest
     except ImportError:
         print("❌ pytest não está instalado. Instalando...")
+        import subprocess, sys
         subprocess.check_call([sys.executable, "-m", "pip", "install", "pytest"])
-    
-    # Executar testes
-    test_file = "tests/test_auth.py"
-    
-    if not os.path.exists(test_file):
-        print(f"❌ Arquivo de teste não encontrado: {test_file}")
-        return False
-    
-    print(f"📁 Executando testes em: {test_file}")
-    print()
-    
-    try:
-        # Executar pytest com output detalhado
-        result = subprocess.run([
-            sys.executable, "-m", "pytest", 
-            test_file, 
-            "-v", 
-            "--tb=short"
-        ], capture_output=True, text=True)
-        
-        print(result.stdout)
-        
-        if result.stderr:
-            print("⚠️  Warnings/Errors:")
-            print(result.stderr)
-        
-        if result.returncode == 0:
-            print("✅ Todos os testes passaram!")
-            return True
-        else:
-            print("❌ Alguns testes falharam!")
-            return False
-            
-    except subprocess.CalledProcessError as e:
-        print(f"❌ Erro ao executar testes: {e}")
-        return False
-    except Exception as e:
-        print(f"❌ Erro inesperado: {e}")
+    import subprocess, sys
+    result = subprocess.run([
+        sys.executable, "-m", "pytest", "tests", "-v", "--tb=short"
+    ], capture_output=True, text=True)
+    print(result.stdout)
+    if result.stderr:
+        print("⚠️  Warnings/Errors:")
+        print(result.stderr)
+    if result.returncode == 0:
+        print("✅ Todos os testes passaram!")
+        return True
+    else:
+        print("❌ Alguns testes falharam!")
         return False
 
 def run_specific_test(test_name):
