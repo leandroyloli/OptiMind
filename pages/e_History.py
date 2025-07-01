@@ -4,6 +4,9 @@ Show previous optimization jobs
 """
 
 import streamlit as st
+import sys
+import os
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 from utils.auth import require_auth
 from utils.sidebar import create_sidebar
 
