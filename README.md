@@ -7,7 +7,7 @@ O **OptiMind** é uma plataforma revolucionária que transforma descrições em 
 ## 🚀 Funcionalidades
 
 - **Interpretação Natural**: Descreva problemas de otimização em linguagem natural
-- **Pipeline Multi-Agente**: 6 agentes especializados processam cada etapa
+- **Pipeline Multi-Agente**: 7 agentes especializados processam cada etapa
 - **Modelagem Automática**: Geração automática de modelos matemáticos
 - **Execução Segura**: Sandbox para execução de código Pyomo
 - **Insights Inteligentes**: Interpretação automática de resultados
@@ -23,7 +23,7 @@ O **OptiMind** é uma plataforma revolucionária que transforma descrições em 
          │                       │                       │
          ▼                       ▼                       ▼
 ┌─────────────────┐    ┌──────────────────┐    ┌─────────────────┐
-│   Autenticação  │    │  6 Agentes       │    │   Resultados    │
+│   Autenticação  │    │  7 Agentes       │    │   Resultados    │
 │   + Segurança   │    │  Especializados  │    │   + Insights    │
 └─────────────────┘    └──────────────────┘    └─────────────────┘
 ```
@@ -152,7 +152,7 @@ OptiMind/
 ├── agents/                        # Agentes especializados
 │   ├── __init__.py
 │   ├── base_agent.py
-│   ├── entendimento_agent.py
+│   ├── meaning_agent.py
 │   ├── pesquisador_agent.py
 │   ├── matematico_agent.py
 │   ├── formulador_agent.py
@@ -164,7 +164,7 @@ OptiMind/
 │   ├── model_schema.json
 │   └── result_schema.json
 ├── prompts/                       # Prompts dos agentes
-│   ├── entendimento.txt
+│   ├── meaning.txt
 │   ├── pesquisador.txt
 │   ├── matematico.txt
 │   └── formulador.txt
@@ -276,7 +276,7 @@ Para suporte, abra uma issue no GitHub ou entre em contato através do email: su
 
 - [x] Bloco 1: Fundação Básica (Autenticação)
 - [ ] Bloco 2: Interface de Entrada
-- [ ] Bloco 3: Agente Entendimento
+- [ ] Bloco 3: Agente Meaning
 - [ ] Bloco 4: Revisão e Confirmação
 - [ ] Bloco 5: Pipeline Completo
 - [ ] Bloco 6: Otimizações e Deploy

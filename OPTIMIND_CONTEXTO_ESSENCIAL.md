@@ -13,8 +13,8 @@ Este documento contém **contexto essencial** que não está nos outros MDs mas 
 - **Vantagens**: Sandbox automático, ferramentas integradas, menos boilerplate
 - **Alternativa considerada**: AutoGen (mais complexo) ou LangGraph (mais verboso)
 
-### 2. Por que 6 Agentes Específicos?
-- **Entendimento**: Separação clara entre input humano e processamento
+### 2. Por que 7 Agentes Específicos?
+- **Meaning**: Separação clara entre input humano e processamento
 - **Pesquisador**: Necessário para problemas complexos que precisam de refinamento
 - **Matemático**: Gera tanto LaTeX quanto JSON estruturado
 - **Formulador**: Especializado em Pyomo, escolhe solver automaticamente
@@ -52,11 +52,11 @@ class BaseAgent:
         # 4. Retornar resultado
         pass
 
-class EntendimentoAgent(BaseAgent):
+class MeaningAgent(BaseAgent):
     def __init__(self):
         super().__init__(
-            name="Entendimento",
-            system_prompt=load_prompt("entendimento.txt")
+            name="Meaning",
+            system_prompt=load_prompt("meaning.txt")
         )
 ```
 
@@ -162,7 +162,7 @@ executor_config = {
 ## 💰 Decisões de Custo
 
 ### 1. Modelos LLM
-- **GPT-4o-mini**: Para agentes simples (Entendimento, Pesquisador)
+- **GPT-4o-mini**: Para agentes simples (Meaning, Pesquisador)
 - **GPT-4o**: Para agentes complexos (Matemático, Formulador)
 - **Custo estimado**: $0.01-0.10 por job completo
 

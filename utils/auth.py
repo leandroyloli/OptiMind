@@ -1,6 +1,6 @@
 """
-Módulo de Autenticação para OptiMind
-Gerencia usuários, senhas e validação de credenciais
+Authentication Module for OptiMind
+Manages users, passwords and credential validation
 """
 
 import streamlit as st
@@ -14,7 +14,7 @@ from datetime import datetime, timedelta
 import re
 
 class AuthManager:
-    """Gerencia autenticação de usuários"""
+    """Manages user authentication"""
     
     def __init__(self):
         self.users_file = "users.json"
@@ -25,20 +25,20 @@ class AuthManager:
         self.load_login_attempts()
     
     def load_users(self):
-        """Carrega usuários do arquivo JSON"""
+        """Loads users from JSON file"""
         if os.path.exists(self.users_file):
             with open(self.users_file, 'r') as f:
                 self.users_data = json.load(f)
         else:
-            # Usuários padrão para desenvolvimento com senhas SEGURAS
+            # Default users for development with SECURE passwords
             self.users_data = {
                 "usernames": {
                     "admin": {
-                        "name": "Administrador",
+                        "name": "Administrator",
                         "password": self._hash_password("Opt1M1nd@2024#Admin")
                     },
                     "demo": {
-                        "name": "Usuário Demo",
+                        "name": "Demo User",
                         "password": self._hash_password("D3m0@Opt1M1nd#2024!")
                     }
                 }
@@ -46,7 +46,7 @@ class AuthManager:
             self.save_users()
     
     def load_login_attempts(self):
-        """Carrega tentativas de login para rate limiting"""
+        """Loads login attempts for rate limiting"""
         if os.path.exists(self.login_attempts_file):
             with open(self.login_attempts_file, 'r') as f:
                 self.login_attempts = json.load(f)
@@ -54,97 +54,97 @@ class AuthManager:
             self.login_attempts = {}
     
     def save_login_attempts(self):
-        """Salva tentativas de login"""
+        """Saves login attempts"""
         with open(self.login_attempts_file, 'w') as f:
             json.dump(self.login_attempts, f, indent=2)
     
     def is_ip_blocked(self, ip_address: str) -> bool:
-        """Verifica se um IP está bloqueado por tentativas excessivas"""
+        """Checks if an IP is blocked due to excessive attempts"""
         if ip_address not in self.login_attempts:
             return False
         
         attempts = self.login_attempts[ip_address]
         if len(attempts) >= self.max_attempts:
-            # Verificar se o bloqueio ainda está ativo
+            # Check if the lockout is still active
             last_attempt = max(attempts)
             if time.time() - last_attempt < self.lockout_duration:
                 return True
             else:
-                # Resetar tentativas após o período de bloqueio
+                # Reset attempts after lockout period
                 self.login_attempts[ip_address] = []
                 self.save_login_attempts()
         
         return False
     
     def record_login_attempt(self, ip_address: str, success: bool):
-        """Registra uma tentativa de login"""
+        """Records a login attempt"""
         if ip_address not in self.login_attempts:
             self.login_attempts[ip_address] = []
         
         current_time = time.time()
         
         if success:
-            # Resetar tentativas em caso de sucesso
+            # Reset attempts on success
             self.login_attempts[ip_address] = []
         else:
-            # Adicionar tentativa falhada
+            # Add failed attempt
             self.login_attempts[ip_address].append(current_time)
-            # Manter apenas as últimas tentativas
+            # Keep only the latest attempts
             self.login_attempts[ip_address] = self.login_attempts[ip_address][-self.max_attempts:]
         
         self.save_login_attempts()
     
     def validate_password_strength(self, password: str) -> Tuple[bool, str]:
-        """Valida a força da senha"""
+        """Validates password strength"""
         if len(password) < 12:
-            return False, "Senha deve ter pelo menos 12 caracteres"
+            return False, "Password must have at least 12 characters"
         
         if not re.search(r"[A-Z]", password):
-            return False, "Senha deve conter pelo menos uma letra maiúscula"
+            return False, "Password must contain at least one uppercase letter"
         
         if not re.search(r"[a-z]", password):
-            return False, "Senha deve conter pelo menos uma letra minúscula"
+            return False, "Password must contain at least one lowercase letter"
         
         if not re.search(r"\d", password):
-            return False, "Senha deve conter pelo menos um número"
+            return False, "Password must contain at least one number"
         
         if not re.search(r"[!@#$%^&*(),.?\":{}|<>]", password):
-            return False, "Senha deve conter pelo menos um caractere especial"
+            return False, "Password must contain at least one special character"
         
-        return True, "Senha forte"
+        return True, "Strong password"
     
     def save_users(self):
-        """Salva usuários no arquivo JSON"""
+        """Saves users to JSON file"""
         with open(self.users_file, 'w') as f:
             json.dump(self.users_data, f, indent=2)
     
     def _hash_password(self, password: str) -> str:
-        """Hash de senha usando bcrypt"""
+        """Password hash using bcrypt"""
         return bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt()).decode('utf-8')
     
     def verify_password(self, password: str, hashed: str) -> bool:
-        """Verifica se a senha está correta"""
+        """Verifies if the password is correct"""
         return bcrypt.checkpw(password.encode('utf-8'), hashed.encode('utf-8'))
     
     def add_user(self, username: str, name: str, password: str) -> Tuple[bool, str]:
-        """Adiciona novo usuário com validação de senha"""
+        """Adds new user with password validation"""
         if username in self.users_data["usernames"]:
-            return False, "Usuário já existe"
+            return False, "User already exists"
         
-        # Validar força da senha
+        # Validate password strength
         is_strong, message = self.validate_password_strength(password)
         if not is_strong:
-            return False, f"Senha fraca: {message}"
+            return False, f"Weak password: {message}"
         
         self.users_data["usernames"][username] = {
             "name": name,
             "password": self._hash_password(password)
         }
         self.save_users()
-        return True, "Usuário criado com sucesso"
+        return True, "User created successfully"
     
     def remove_user(self, username: str) -> bool:
-        """Remove usuário"""
+        """Removes user"""
         if username in self.users_data["usernames"]:
             del self.users_data["usernames"][username]
             self.save_users()
@@ -152,24 +152,24 @@ class AuthManager:
         return False
     
     def get_user_info(self, username: str) -> Optional[Dict]:
-        """Retorna informações do usuário"""
+        """Returns user information"""
         return self.users_data["usernames"].get(username)
     
     def list_users(self) -> List[str]:
-        """Lista todos os usuários"""
+        """Lists all users"""
         return list(self.users_data["usernames"].keys())
 
 def get_client_ip():
-    """Obtém o IP do cliente (simplificado para desenvolvimento)"""
-    # Em produção, isso seria obtido do request
+    """Gets client IP (simplified for development)"""
+    # In production, this would be obtained from the request
     return "127.0.0.1"
 
 def create_authenticator() -> stauth.Authenticate:
-    """Cria instância do autenticador Streamlit"""
-    # Carregar usuários do arquivo JSON ou usar padrão
+    """Creates Streamlit authenticator instance"""
+    # Load users from JSON file or use default
     auth_manager = AuthManager()
     
-    # Converter para formato do streamlit-authenticator
+    # Convert to streamlit-authenticator format
     credentials = {
         'usernames': {}
     }
@@ -190,45 +190,168 @@ def create_authenticator() -> stauth.Authenticate:
 
 def check_auth_status() -> Tuple[Optional[str], Optional[str], bool]:
     """
-    Verifica status de autenticação usando session_state
+    Checks authentication status using session_state
     Returns: (name, username, authentication_status)
     """
-    authenticator = create_authenticator()
+    # Check if already authenticated
+    auth_status = st.session_state.get("authentication_status")
+    name = st.session_state.get("name")
+    username = st.session_state.get("username")
     
-    # Renderizar o formulário de login
-    authenticator.login(
-        location="main",
-        fields={"Form name": "OptiMind Login"}
-    )
+    if auth_status == True:
+        return name, username, auth_status
     
-    # Verificar status na session_state
+    # If not authenticated, show custom login screen
+    show_login_screen()
+    
+    # Check status after login attempt
     auth_status = st.session_state.get("authentication_status")
     name = st.session_state.get("name")
     username = st.session_state.get("username")
     
     return name, username, auth_status
 
+def show_status_message(message: str, message_type: str = "info"):
+    """Shows a status message aligned with the login container"""
+    colors = {
+        "error": {"bg": "#fee", "color": "#c53030", "border": "#fed7d7"},
+        "warning": {"bg": "#fffbeb", "color": "#c05621", "border": "#fef5e7"},
+        "success": {"bg": "#f0fff4", "color": "#2f855a", "border": "#c6f6d5"},
+        "info": {"bg": "#ebf8ff", "color": "#2b6cb0", "border": "#bee3f8"}
+    }
+    
+    style = colors.get(message_type, colors["info"])
+    
+    st.markdown(f"""
+    <div style="max-width: 400px; margin: 0 auto;">
+        <div style="background: {style['bg']}; color: {style['color']}; padding: 1rem; border-radius: 8px; border: 1px solid {style['border']}; text-align: center; font-weight: 500;">
+            {message}
+        </div>
+    </div>
+    """, unsafe_allow_html=True)
+
+def show_login_screen():
+    """Shows custom and beautiful login screen"""
+    
+    # Hide sidebar and default Streamlit elements
+    st.markdown("""
+    <style>
+    section[data-testid="stSidebar"] {display: none !important;}
+    #MainMenu {visibility: hidden;}
+    footer {visibility: hidden;}
+    header {visibility: hidden;}
+    
+    /* Custom styles for status messages */
+    .status-container {
+        background: white;
+        padding: 2rem;
+        border-radius: 15px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        border: 1px solid #e0e0e0;
+        max-width: 400px;
+        margin: 0 auto;
+    }
+    .status-message {
+        padding: 1rem;
+        border-radius: 8px;
+        margin: 1rem 0;
+        text-align: center;
+        font-weight: 500;
+    }
+    .status-error {
+        background: #fee;
+        color: #c53030;
+        border: 1px solid #fed7d7;
+    }
+    .status-warning {
+        background: #fffbeb;
+        color: #c05621;
+        border: 1px solid #fef5e7;
+    }
+    .status-success {
+        background: #f0fff4;
+        color: #2f855a;
+        border: 1px solid #c6f6d5;
+    }
+    </style>
+    """, unsafe_allow_html=True)
+    
+    # Container principal centralizado
+    col1, col2, col3 = st.columns([1, 2, 1])
+    
+    with col2:
+        # Header do login
+        st.markdown("""
+        <div style="text-align: center; margin-bottom: 2rem;">
+            <h1 style="color: #1f77b4; font-size: 2.5rem; margin: 0; font-weight: 700;">🧠 OptiMind</h1>
+            <p style="color: #666; font-size: 1.1rem; margin: 0.5rem 0 0 0;">AI-Powered Optimization Platform</p>
+        </div>
+        """, unsafe_allow_html=True)
+        
+        # Welcome message
+        st.markdown("""
+        <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 1.5rem; border-radius: 10px; margin-bottom: 2rem; text-align: center;">
+            <h3 style="margin: 0 0 0.5rem 0; font-size: 1.3rem;">👋 Welcome!</h3>
+            <p style="margin: 0; opacity: 0.9; font-size: 0.95rem;">Access the most advanced optimization platform in the market</p>
+        </div>
+        """, unsafe_allow_html=True)
+        
+        # Form container
+        st.markdown("""
+        <div style="background: #f8f9fa; padding: 1.5rem; border-radius: 10px; border: 1px solid #e0e0e0; margin-bottom: 1rem;">
+            <h4 style="color: #333; margin: 0; text-align: center;">🔐 System Access</h4>
+        </div>
+        """, unsafe_allow_html=True)
+        
+        # Status messages container (will be populated by streamlit-authenticator)
+        status_container = st.container()
+        
+        # Formulário de login usando streamlit-authenticator
+        authenticator = create_authenticator()
+        authenticator.login(
+            location="main",
+            fields={"Form name": "Login"}
+        )
+        
+        # Close the form container
+        st.markdown("</div>", unsafe_allow_html=True)
+        
+        # Add space for status messages that might appear
+        st.markdown("""
+        <div style="height: 2rem;"></div>
+        """, unsafe_allow_html=True)
+        
+
 def logout():
-    """Realiza logout do usuário"""
-    authenticator = create_authenticator()
-    authenticator.logout("Logout", location="main")
+    """Performs user logout"""
+    # Clear all authentication-related session state
+    auth_keys = ['authentication_status', 'name', 'username']
+    for key in auth_keys:
+        if key in st.session_state:
+            del st.session_state[key]
+    
+    # Show success message
+    st.success("✅ Logout successful!")
+    
+    # Force page reload to show login screen
+    st.rerun()
 
 def require_auth():
     """
-    Decorator para requerer autenticação
-    Se não autenticado, para a execução
+    Decorator to require authentication
+    If not authenticated, stops execution
     """
     name, username, auth_status = check_auth_status()
     
     if auth_status == False:
-        st.error("❌ Usuário/senha incorretos")
+        show_status_message("❌ Incorrect username/password", "error")
         st.stop()
     elif auth_status == None:
-        st.warning("⚠️ Por favor, insira suas credenciais")
+        show_status_message("⚠️ Please enter your credentials", "warning")
         st.stop()
     elif auth_status == True:
-        # Login bem-sucedido
+        # Successful login
         return name, username
     
-    # Se chegou aqui, ainda não autenticado
+    # If we got here, still not authenticated
     st.stop() 

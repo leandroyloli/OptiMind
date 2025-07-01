@@ -18,4 +18,9 @@ textColor="#1f2937"
 font = "sans serif"
 
 [client]
-showErrorDetails = false 
+showErrorDetails = false
+
+# Removendo configurações inválidas
+# [ui]
+# hideTopBar = true
+# hideSidebarNav = true 

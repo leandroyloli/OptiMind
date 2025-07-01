@@ -57,11 +57,34 @@ Criar a base mínima funcional com autenticação robusta, configuração e depl
 - [x] Validar que testes usam as mesmas funções do app real
 - [x] **Resultado**: 11 testes passando, 3 pulados (integração Streamlit)
 
-#### 1.3 Página Inicial
-- [ ] Criar página Home com descrição do OptiMind
-- [ ] Adicionar botão "Novo Job" (ainda não funcional)
-- [ ] Implementar logout
-- [ ] Adicionar navegação básica
+#### 1.3 Página Inicial ✅ **CONCLUÍDO**
+- [x] Criar página Home com descrição do OptiMind
+- [x] Adicionar botão "Novo Job" (ainda não funcional)
+- [x] Implementar design moderno e light em inglês
+- [x] Implementar Golden Circle (Why/How/What)
+- [x] Adicionar casos de uso em consultoria
+- [x] Incluir algoritmos técnicos detalhados
+- [x] Explicar arquitetura técnica e agentes
+- [x] Adicionar logo centralizado no final
+- [x] **Implementar storytelling focado na dor dos consultores**
+- [x] **Adicionar casos de sucesso da Mirow Co com métricas reais**
+- [x] **Mostrar simplicidade para usuário vs complexidade interna**
+- [x] **Destacar problemas PhD-level resolvidos**
+- [x] **Incluir mensagem de democratização de soluções avançadas**
+
+#### 1.3.1 Sidebar e Gestão de Usuário ✅ **CONCLUÍDO**
+- [x] Implementar sidebar bonito e funcional
+- [x] Adicionar header com nome do app (OptiMind)
+- [x] Criar seção de informações do usuário
+- [x] Implementar navegação principal (Home, Novo Job, Histórico)
+- [x] Adicionar seção de configurações (Perfil, Preferências)
+- [x] Incluir seção de ajuda (Documentação, Suporte)
+- [x] Implementar botão de logout funcional
+- [x] Adicionar footer com branding Mirow & Co.
+- [x] Aplicar CSS customizado para design moderno
+- [x] Integrar sidebar em todas as páginas principais
+- [x] Testar funcionalidade de logout
+- [x] Validar navegação entre seções
 
 #### 1.4 Configuração de Secrets
 - [ ] Configurar `.streamlit/secrets.toml`
@@ -172,7 +195,7 @@ def test_bloco_2():
 
 ---
 
-## 📋 Bloco 3: Agente Entendimento (Semana 3)
+## 📋 Bloco 3: Agente Meaning (Semana 3)
 
 ### 🎯 Objetivo
 Implementar o primeiro agente que interpreta problemas de otimização.
@@ -185,8 +208,8 @@ Implementar o primeiro agente que interpreta problemas de otimização.
 - [ ] Configurar PraisonAI básico
 - [ ] Testar conexão com OpenAI
 
-#### 3.2 Agente Entendimento
-- [ ] Implementar `EntendimentoAgent`
+#### 3.2 Agente Meaning
+- [ ] Implementar `MeaningAgent`
 - [ ] Criar prompt específico para interpretação
 - [ ] Implementar validação de JSON de saída
 - [ ] Testar com problemas simples
@@ -227,7 +250,7 @@ def test_bloco_3():
 ```
 
 ### 🚀 Resultado Esperado
-- Agente Entendimento funcionando
+- Agente Meaning funcionando
 - Interpretação correta de problemas válidos
 - Rejeição adequada de problemas inválidos
 - Interface integrada com feedback
@@ -292,7 +315,7 @@ def test_bloco_4():
 ## 📋 Bloco 5: Pipeline de Agentes (Semana 5-6)
 
 ### 🎯 Objetivo
-Implementar pipeline completo dos 6 agentes com orquestração.
+Implementar pipeline completo dos 7 agentes com orquestração.
 
 ### 📝 Tarefas
 
@@ -346,7 +369,7 @@ def test_bloco_5():
 ```
 
 ### 🚀 Resultado Esperado
-- Pipeline completo de 6 agentes funcionando
+- Pipeline completo de 7 agentes funcionando
 - Validação rigorosa em cada etapa
 - Execução Pyomo sandboxed
 - Resultados válidos para problemas simples

@@ -18,7 +18,7 @@ O **OptiMind** é uma plataforma de otimização assistida por IA que transforma
          │                       │                       │
          ▼                       ▼                       ▼
 ┌─────────────────┐    ┌──────────────────┐    ┌─────────────────┐
-│   Autenticação  │    │  6 Agentes       │    │   Resultados    │
+│   Autenticação  │    │  7 Agentes       │    │   Resultados    │
 │   + Segurança   │    │  Especializados  │    │   + Insights    │
 └─────────────────┘    └──────────────────┘    └─────────────────┘
 ```
@@ -32,7 +32,7 @@ O **OptiMind** é uma plataforma de otimização assistida por IA que transforma
    - Sistema de autenticação
 
 2. **Orquestrador Multi-Agente (PraisonAI)**
-   - Pipeline sequencial de 6 agentes especializados
+   - Pipeline sequencial de 7 agentes especializados
    - Sistema MCP (MetaController Planner) com MetaManager
    - Validação de schemas JSON em cada etapa
    - Mecanismos de retry e fallback
@@ -55,12 +55,12 @@ O **OptiMind** é uma plataforma de otimização assistida por IA que transforma
 
 ## 🤖 2. Pipeline de Agentes
 
-### 2.1 Estrutura dos 6 Agentes
+### 2.1 Estrutura dos 7 Agentes
 
 | Agente | Função | Entrada | Saída | Validação |
 |--------|--------|---------|-------|-----------|
-| **Entendimento** | Valida e interpreta input do usuário | Texto natural | JSON com `is_valid_problem` | Schema básico |
-| **Pesquisador** | Refina e estrutura o problema | JSON do Entendimento | `refined_problem.json` | `problem_schema.json` |
+| **Meaning** | Valida e interpreta input do usuário | Texto natural | JSON com `is_valid_problem` | Schema básico |
+| **Pesquisador** | Refina e estrutura o problema | JSON do Meaning | `refined_problem.json` | `problem_schema.json` |
 | **Matemático** | Gera modelo matemático formal | JSON refinado | LaTeX + `model.json` | `model_schema.json` |
 | **Formulador** | Cria código Pyomo | Modelo matemático | Código Python | `code_schema.json` |
 | **Executor** | Executa modelo em sandbox | Código Pyomo | Resultados do solver | `result_schema.json` |
@@ -72,11 +72,11 @@ O **OptiMind** é uma plataforma de otimização assistida por IA que transforma
 ```yaml
 # Exemplo de configuração MCP (flows/optimind_flow.yml)
 - id: understand_problem
-  agent: Entendimento
+  agent: Meaning
   goal: problem_understood
   condition: is_input_valid
   on_fail:
-    retry_agent: Entendimento
+    retry_agent: Meaning
     max_retries: 2
     fallback: ask_user_clarification
 
@@ -85,7 +85,7 @@ O **OptiMind** é uma plataforma de otimização assistida por IA que transforma
   goal: problem_refined
   condition: is_refined_json_valid
   on_fail:
-    retry_agent: Entendimento
+    retry_agent: Meaning
     max_retries: 1
 
 - id: mathematical_model
@@ -137,7 +137,7 @@ Todos os agentes se comunicam via mensagens JSON estruturadas:
 ```json
 {
   "message_id": "msg-123",
-  "sender": "Entendimento",
+  "sender": "Meaning",
   "recipient": "Pesquisador",
   "type": "PROBLEM_REFINED",
   "timestamp": "2024-01-15T10:30:00Z",
@@ -204,7 +204,7 @@ st.text_area(
 objective = st.radio("Objetivo:", ["Maximizar", "Minimizar"])
 
 if st.button("Analisar Problema"):
-    # Envia para Agente Entendimento
+    # Envia para Agente Meaning
     pass
 ```
 
@@ -220,9 +220,9 @@ col1, col2, col3, col4, col5, col6, col7 = st.columns(7)
 
 with col1:
     if stage >= 1:
-        st.success("✅ Entendimento")
+        st.success("✅ Meaning")
     else:
-        st.info("⏳ Entendimento")
+        st.info("⏳ Meaning")
 
 # Repetir para outros agentes...
 ```
@@ -267,7 +267,7 @@ optimind/
 │   └── secrets.toml               # Chaves API (não no git)
 ├── agents/
 │   ├── __init__.py
-│   ├── entendimento.py            # Agente de entendimento
+│   ├── meaning.py                 # Agente de meaning
 │   ├── pesquisador.py             # Agente de pesquisa
 │   ├── matematico.py              # Agente matemático
 │   ├── formulador.py              # Agente formulador
@@ -284,7 +284,7 @@ optimind/
 ├── flows/
 │   └── optimind_flow.yml          # Configuração MCP
 ├── prompts/
-│   ├── entendimento.txt           # Prompt do agente entendimento
+│   ├── meaning.txt                # Prompt do agente meaning
 │   ├── pesquisador.txt            # Prompt do agente pesquisador
 │   ├── matematico.txt             # Prompt do agente matemático
 │   ├── formulador.txt             # Prompt do agente formulador
@@ -388,9 +388,9 @@ optimind/
 
 ### 4.4 Prompts dos Agentes
 
-#### 4.4.1 Agente Entendimento
+#### 4.4.1 Agente Meaning
 ```
-SYSTEM: Você é o Agente Entendimento do OptiMind.
+SYSTEM: Você é o Agente Meaning do OptiMind.
 
 Sua função é analisar descrições de problemas de otimização em linguagem natural e determinar se são válidos.
 
@@ -608,7 +608,7 @@ job_metrics = {
     "user_id": "user_456",
     "start_time": datetime.now(),
     "agent_times": {
-        "entendimento": 2.3,
+        "meaning": 2.3,
         "pesquisador": 1.8,
         "matematico": 3.1,
         "formulador": 2.7,
@@ -631,13 +631,13 @@ job_metrics = {
 ```python
 # tests/test_agents.py
 import unittest
-from agents.entendimento import EntendimentoAgent
+from agents.meaning import MeaningAgent
 from schemas.problem_schema import problem_schema
 from jsonschema import validate
 
-class TestEntendimentoAgent(unittest.TestCase):
+class TestMeaningAgent(unittest.TestCase):
     def setUp(self):
-        self.agent = EntendimentoAgent()
+        self.agent = MeaningAgent()
     
     def test_valid_optimization_problem(self):
         input_text = "Maximize profit from products A and B"
@@ -693,7 +693,7 @@ def test_full_pipeline():
 
 ### 9.1 Fase 1 - MVP (4 semanas)
 - [ ] Setup básico do projeto
-- [ ] Implementação dos 6 agentes básicos
+- [ ] Implementação dos 7 agentes básicos
 - [ ] Interface Streamlit simples
 - [ ] Schemas JSON e validação
 - [ ] Deploy no Streamlit Cloud
