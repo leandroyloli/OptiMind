@@ -6,7 +6,7 @@ import streamlit as st
 from utils.auth import require_auth
 from utils.sidebar import create_sidebar
 
-# Page configuration
+# Page  configuration
 st.set_page_config(
     page_title="OptiMind - AI-Powered Optimization by Mirow & Co.",
     page_icon="🧠",
