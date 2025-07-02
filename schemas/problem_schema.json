@@ -1,0 +1,122 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "OptimizationProblem",
+  "type": "object",
+  "required": [
+    "problem_type",
+    "sense",
+    "objective",
+    "objective_description",
+    "decision_variables",
+    "auxiliary_variables",
+    "constraints",
+    "data",
+    "is_valid_problem",
+    "confidence",
+    "clarification",
+    "business_context"
+  ],
+  "properties": {
+    "problem_type": {
+      "enum": ["LP", "MIP", "NLP", "Stochastic", "Unknown"],
+      "description": "Tipo do problema de otimização"
+    },
+    "sense": {
+      "enum": ["maximize", "minimize"],
+      "description": "Sentido da otimização"
+    },
+    "objective": {
+      "type": "string",
+      "description": "Função objetivo em notação matemática"
+    },
+    "objective_description": {
+      "type": "string",
+      "description": "Descrição em linguagem natural do objetivo"
+    },
+    "decision_variables": {
+      "type": "object",
+      "patternProperties": {
+        "^[a-zA-Z][a-zA-Z0-9_]*$": {
+          "type": "object",
+          "properties": {
+            "type": {"enum": ["Real", "Integer", "Binary"]},
+            "description": {"type": "string"},
+            "bounds": {
+              "type": "array",
+              "items": {"type": ["number", "null"]},
+              "minItems": 2,
+              "maxItems": 2,
+              "description": "[lower_bound, upper_bound]"
+            }
+          },
+          "required": ["type", "description"]
+        }
+      },
+      "description": "Variáveis de decisão do problema (que o usuário controla)"
+    },
+    "auxiliary_variables": {
+      "type": "object",
+      "patternProperties": {
+        "^[a-zA-Z][a-zA-Z0-9_]*$": {
+          "type": "object",
+          "properties": {
+            "type": {"enum": ["Real", "Integer", "Binary"]},
+            "description": {"type": "string"},
+            "equation": {
+              "type": "string",
+              "description": "Equação que define a variável auxiliar em termos das variáveis de decisão"
+            },
+            "bounds": {
+              "type": "array",
+              "items": {"type": ["number", "null"]},
+              "minItems": 2,
+              "maxItems": 2,
+              "description": "[lower_bound, upper_bound]"
+            }
+          },
+          "required": ["type", "description", "equation"]
+        }
+      },
+      "description": "Variáveis auxiliares (calculadas a partir das variáveis de decisão)"
+    },
+    "constraints": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "expression": {"type": "string"},
+          "description": {"type": "string"},
+          "type": {"enum": ["inequality", "equality", "bound"]}
+        },
+        "required": ["expression", "description"]
+      },
+      "description": "Lista de restrições"
+    },
+    "data": {
+      "type": "object",
+      "description": "All numerical values, tables, time series, initial values, rates, and parameters needed to solve the problem. For example: cash flows per month, interest rates, initial balances, limits, etc."
+    },
+    "is_valid_problem": {
+      "type": "boolean",
+      "description": "Se o problema é válido para otimização"
+    },
+    "confidence": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1,
+      "description": "Confiança na interpretação (0-1)"
+    },
+    "clarification": {
+      "type": "string",
+      "description": "Pedido de esclarecimento se necessário"
+    },
+    "business_context": {
+      "type": "object",
+      "properties": {
+        "domain": {"type": "string"},
+        "stakeholders": {"type": "array", "items": {"type": "string"}},
+        "constraints": {"type": "array", "items": {"type": "string"}}
+      }
+    }
+  }
+} 

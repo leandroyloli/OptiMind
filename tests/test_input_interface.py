@@ -12,7 +12,7 @@ import re
 # Add the project root to the path
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-from pages.d_NewJob import validate_optimization_input, get_example_problems
+from pages.d_NewJob import get_example_problems
 
 # Import the validation function from the new job page
 def validate_optimization_input(text, objective_type):

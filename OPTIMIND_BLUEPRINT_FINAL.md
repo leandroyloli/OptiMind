@@ -26,15 +26,15 @@ O **OptiMind** é uma plataforma de otimização assistida por IA que transforma
 ### 1.2 Componentes Principais
 
 1. **Interface de Usuário (Streamlit)**
-   - Chat interativo para entrada de problemas
+   - Chat interativo para entrada de problemas ✅ **IMPLEMENTADO**
    - Timeline de progresso do pipeline
    - Visualização de resultados e insights
-   - Sistema de autenticação
+   - Sistema de autenticação ✅ **IMPLEMENTADO**
 
 2. **Orquestrador Multi-Agente (PraisonAI)**
    - Pipeline sequencial de 7 agentes especializados
    - Sistema MCP (MetaController Planner) com MetaManager
-   - Validação de schemas JSON em cada etapa
+   - Validação de schemas JSON em cada etapa ✅ **IMPLEMENTADO**
    - Mecanismos de retry e fallback
 
 3. **Motor de Otimização (Pyomo)**
@@ -43,13 +43,13 @@ O **OptiMind** é uma plataforma de otimização assistida por IA que transforma
    - Suporte a solvers open-source (CBC, GLPK, HiGHS)
 
 4. **Camada de Segurança**
-   - Autenticação robusta com senhas seguras (bcrypt)
-   - Validação de força de senha (12+ chars, maiúsculas, minúsculas, números, símbolos)
-   - Rate limiting de login (5 tentativas por IP, bloqueio de 5 minutos)
-   - Proteção de chaves API via `st.secrets`
+   - Autenticação robusta com senhas seguras (bcrypt) ✅ **IMPLEMENTADO**
+   - Validação de força de senha (12+ chars, maiúsculas, minúsculas, números, símbolos) ✅ **IMPLEMENTADO**
+   - Rate limiting de login (5 tentativas por IP, bloqueio de 5 minutos) ✅ **IMPLEMENTADO**
+   - Proteção de chaves API via `st.secrets` ✅ **IMPLEMENTADO**
    - Execução sandboxed de código
-   - Logs de tentativas de login
-   - Arquivos sensíveis protegidos (.gitignore)
+   - Logs de tentativas de login ✅ **IMPLEMENTADO**
+   - Arquivos sensíveis protegidos (.gitignore) ✅ **IMPLEMENTADO**
 
 ---
 
@@ -57,17 +57,86 @@ O **OptiMind** é uma plataforma de otimização assistida por IA que transforma
 
 ### 2.1 Estrutura dos 7 Agentes
 
-| Agente | Função | Entrada | Saída | Validação |
-|--------|--------|---------|-------|-----------|
-| **Meaning** | Valida e interpreta input do usuário | Texto natural | JSON com `is_valid_problem` | Schema básico |
-| **Pesquisador** | Refina e estrutura o problema | JSON do Meaning | `refined_problem.json` | `problem_schema.json` |
-| **Matemático** | Gera modelo matemático formal | JSON refinado | LaTeX + `model.json` | `model_schema.json` |
-| **Formulador** | Cria código Pyomo | Modelo matemático | Código Python | `code_schema.json` |
-| **Executor** | Executa modelo em sandbox | Código Pyomo | Resultados do solver | `result_schema.json` |
-| **Interpretador** | Analisa e interpreta resultados | Resultados + modelo | Insights de negócio | `insight_schema.json` |
-| **Auditor** | Valida todo o pipeline | Todos os outputs | Aprovação ou retry | Schemas + lógica |
+| Agente | Função | Entrada | Saída | Validação | Status |
+|--------|--------|---------|-------|-----------|--------|
+| **Meaning** ✅ **IMPLEMENTADO** | Valida e interpreta input do usuário | Texto natural | JSON com `is_valid_problem` | Schema básico | ✅ Completo |
+| **Pesquisador** | Refina e estrutura o problema | JSON do Meaning | `refined_problem.json` | `problem_schema.json` | 🔄 Próximo |
+| **Matemático** | Gera modelo matemático formal | JSON refinado | LaTeX + `model.json` | `model_schema.json` | 🔄 Próximo |
+| **Formulador** | Cria código Pyomo | Modelo matemático | Código Python | `code_schema.json` | 🔄 Próximo |
+| **Executor** | Executa modelo em sandbox | Código Pyomo | Resultados do solver | `result_schema.json` | 🔄 Próximo |
+| **Interpretador** | Analisa e interpreta resultados | Resultados + modelo | Insights de negócio | `insight_schema.json` | 🔄 Próximo |
+| **Auditor** | Valida todo o pipeline | Todos os outputs | Aprovação ou retry | Schemas + lógica | 🔄 Próximo |
 
-### 2.2 Sistema MCP (MetaController Planner)
+### 2.2 Meaning Agent - Implementação Completa ✅
+
+#### 2.2.1 Funcionalidades Implementadas
+- **Interpretação conversacional**: Responde de forma amigável e natural
+- **Contexto de chat**: Mantém histórico de conversas para construir problemas passo a passo
+- **Política de não-invenção**: Nunca inventa dados, só estrutura o que o usuário fornece
+- **Campo `data` obrigatório**: Todos os parâmetros, tabelas, valores são capturados neste campo
+- **Validação de schema**: Toda saída é validada contra `problem_schema.json`
+- **Tratamento de mensagens casuais**: Responde amigavelmente a saudações sem tentar estruturar problemas
+- **Separação de variáveis**: Distingue claramente variáveis de decisão e auxiliares
+- **Equações para auxiliares**: Captura expressões matemáticas que definem variáveis auxiliares
+
+#### 2.2.2 Prompt Otimizado (`prompts/meaning.txt`)
+```json
+{
+  "problem_type": "LP|MIP|NLP|Stochastic|Combinatorial|Network|Meta-Heuristics|Unknown",
+  "sense": "maximize|minimize", 
+  "objective": "mathematical expression",
+  "objective_description": "description in English",
+  "decision_variables": {
+    "variable_name": {
+      "type": "Real|Integer|Binary",
+      "description": "variable description",
+      "bounds": [min, max]
+    }
+  },
+  "auxiliary_variables": {
+    "variable_name": {
+      "type": "Real|Integer|Binary",
+      "description": "auxiliary variable description",
+      "equation": "expression in terms of decision variables"
+    }
+  },
+  "constraints": [
+    {
+      "expression": "mathematical expression",
+      "description": "constraint description",
+      "type": "inequality|equality|bound"
+    }
+  ],
+  "data": {
+    "parameter_name": "value or list or table",
+    "another_parameter": "..."
+  },
+  "is_valid_problem": true/false,
+  "confidence": 0.0-1.0,
+  "clarification": "your friendly response to the user",
+  "business_context": {
+    "domain": "problem domain",
+    "stakeholders": ["stakeholder1", "stakeholder2"],
+    "constraints": ["constraint1", "constraint2"]
+  }
+}
+```
+
+#### 2.2.3 Integração com Interface (`pages/d_NewJob.py`)
+- **Chat interativo**: Interface de conversa natural com o Meaning Agent
+- **Resumo do problema**: Exibe métricas e estrutura quando `is_valid_problem: true`
+- **Exemplos de problemas**: Problemas pré-definidos para facilitar o input
+- **Validação visual**: Mostra tipo de problema, confiança, variáveis, restrições
+- **Continuidade**: Permite continuar a conversa para ajustar ou adicionar dados
+
+#### 2.2.4 Testes Robustos (`tests/test_meaning_agent.py`)
+- **Testes de casos clássicos**: LP simples, com variáveis auxiliares, minimização
+- **Testes de contexto**: Construção passo a passo de problemas
+- **Testes de mensagens casuais**: Respostas amigáveis a saudações
+- **Validação de schema**: Toda saída é validada contra o schema JSON
+- **Testes de consistência**: Verificação de dados financeiros e unidades
+
+### 2.3 Sistema MCP (MetaController Planner)
 
 ```yaml
 # Exemplo de configuração MCP (flows/optimind_flow.yml)
@@ -130,7 +199,7 @@ O **OptiMind** é uma plataforma de otimização assistida por IA que transforma
     max_retries: 1
 ```
 
-### 2.3 Comunicação entre Agentes
+### 2.4 Comunicação entre Agentes
 
 Todos os agentes se comunicam via mensagens JSON estruturadas:
 
@@ -188,7 +257,7 @@ if st.sidebar.button("🚪 Logout"):
 - Compatibilidade com streamlit-authenticator v0.4.2
 - Estrutura correta (cookie_key, session_state)
 
-#### 3.2.2 Home (Lista de Jobs)
+#### 3.2.2 Home (Lista de Jobs) ✅ **IMPLEMENTADO**
 - Botão "Novo Job" proeminente
 - Lista de jobs anteriores com metadata
 - Filtros por data, status, tipo de problema
@@ -198,47 +267,37 @@ if st.sidebar.button("🚪 Logout"):
 # Interface de entrada - Implementada em pages/d_NewJob.py
 st.text_area(
     "Descreva seu problema de otimização:",
-    placeholder="Ex: Maximizar lucro vendendo produtos A e B, com limite de produção de 100 unidades...",
+    placeholder="Ex: Maximizar lucro vendendo produtos A e B...",
     height=400  # Interface adaptativa
 )
 
-objective = st.radio("Objetivo:", ["Maximizar", "Minimizar"])
-
-# Validação expandida implementada
-if st.button("Analisar Problema"):
-    # Validação local + envio para Agente Meaning
-    validation_result = validate_problem_input(problem_text, objective)
-    if validation_result["is_valid"]:
-        # Envia para Agente Meaning
-        pass
-    else:
-        st.error(validation_result["message"])
+# Chat interativo com Meaning Agent
+if st.button("💬 Enviar"):
+    result = meaning_agent.process_problem(user_input)
+    if result['success']:
+        problem_data = result['result']
+        display_problem_summary(problem_data)
 ```
 
-#### 3.2.4 Revisão e Confirmação
-- Mostra problema reescrito pelo sistema
-- JSON estruturado (colapsável)
-- Botões "Confirmar" ou "Editar"
+**Funcionalidades Implementadas:**
+- Chat interativo com Meaning Agent
+- Resumo visual do problema estruturado
+- Exemplos de problemas pré-definidos
+- Validação de entrada expandida
+- Interface adaptativa e responsiva
+- Integração completa com schema JSON
 
-#### 3.2.5 Timeline de Progresso
-```python
-# Timeline horizontal
-col1, col2, col3, col4, col5, col6, col7 = st.columns(7)
+#### 3.2.4 Histórico de Jobs ✅ **IMPLEMENTADO**
+- Lista de jobs processados
+- Status de cada job
+- Filtros e busca
+- Detalhes de cada execução
 
-with col1:
-    if stage >= 1:
-        st.success("✅ Meaning")
-    else:
-        st.info("⏳ Meaning")
-
-# Repetir para outros agentes...
-```
-
-#### 3.2.6 Resultados Finais
-- Valor ótimo da função objetivo
-- Tabela de variáveis e valores
-- Insights de negócio
-- Botões de download (código, modelo PDF)
+#### 3.2.5 Ferramentas Administrativas ✅ **IMPLEMENTADO**
+- Gerenciamento de usuários
+- Configurações do sistema
+- Logs de segurança
+- Monitoramento de uso
 
 ---
 
@@ -329,41 +388,69 @@ optimind/
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "title": "OptimizationProblem",
   "type": "object",
-  "required": ["problem_type", "objective", "sense", "variables", "constraints"],
+  "required": [
+    "problem_type", "sense", "objective", "objective_description",
+    "decision_variables", "auxiliary_variables", "constraints", "data",
+    "is_valid_problem", "confidence", "clarification", "business_context"
+  ],
   "properties": {
-    "problem_type": {
-      "enum": ["LP", "MIP", "NLP", "Stochastic"],
-      "description": "Tipo do problema de otimização"
-    },
-    "sense": {
-      "enum": ["maximize", "minimize"],
-      "description": "Sentido da otimização"
-    },
-    "objective": {
-      "type": "string",
-      "description": "Função objetivo em notação matemática"
-    },
-    "variables": {
+    "problem_type": {"enum": ["LP", "MIP", "NLP", "Stochastic", "Unknown"]},
+    "sense": {"enum": ["maximize", "minimize"]},
+    "objective": {"type": "string"},
+    "decision_variables": {
       "type": "object",
       "patternProperties": {
-        "^\\w+$": {
+        "^[a-zA-Z][a-zA-Z0-9_]*$": {
           "type": "object",
           "properties": {
             "type": {"enum": ["Real", "Integer", "Binary"]},
-            "bounds": {
-              "type": "array",
-              "items": {"type": ["number", "null"]},
-              "minItems": 2,
-              "maxItems": 2
-            }
-          }
+            "description": {"type": "string"},
+            "bounds": {"type": "array", "items": {"type": ["number", "null"]}}
+          },
+          "required": ["type", "description"]
+        }
+      }
+    },
+    "auxiliary_variables": {
+      "type": "object",
+      "patternProperties": {
+        "^[a-zA-Z][a-zA-Z0-9_]*$": {
+          "type": "object",
+          "properties": {
+            "type": {"enum": ["Real", "Integer", "Binary"]},
+            "description": {"type": "string"},
+            "equation": {"type": "string"}
+          },
+          "required": ["type", "description", "equation"]
         }
       }
     },
     "constraints": {
       "type": "array",
-      "items": {"type": "string"},
-      "description": "Lista de restrições"
+      "items": {
+        "type": "object",
+        "properties": {
+          "expression": {"type": "string"},
+          "description": {"type": "string"},
+          "type": {"enum": ["inequality", "equality", "bound"]}
+        },
+        "required": ["expression", "description"]
+      }
+    },
+    "data": {
+      "type": "object",
+      "description": "All numerical values, tables, time series, initial values, rates, and parameters needed to solve the problem"
+    },
+    "is_valid_problem": {"type": "boolean"},
+    "confidence": {"type": "number", "minimum": 0, "maximum": 1},
+    "clarification": {"type": "string"},
+    "business_context": {
+      "type": "object",
+      "properties": {
+        "domain": {"type": "string"},
+        "stakeholders": {"type": "array", "items": {"type": "string"}},
+        "constraints": {"type": "array", "items": {"type": "string"}}
+      }
     }
   }
 }
@@ -864,3 +951,49 @@ Com este blueprint detalhado, a implementação pode prosseguir de forma sistem�
 **Data**: Julho 2025  
 **Autor**: Equipe OptiMind  
 **Status**: Aprovado para implementação - Bloco 2 concluído 
+
+## Meaning Agent (Atualizado)
+
+O Meaning Agent é um parceiro conversacional que interpreta problemas de otimização em linguagem natural, extraindo:
+- Variáveis de decisão
+- Variáveis auxiliares
+- Restrições
+- **Dados do problema** (campo `data`): parâmetros, tabelas, séries temporais, taxas, valores iniciais, etc.
+
+**Política de dados:**
+- O agente **nunca inventa ou assume dados**. Ele só estrutura o que o usuário explicitamente forneceu.
+- Se faltar algum dado, o agente pede ao usuário.
+
+### Exemplo de JSON extraído
+```json
+{
+  "problem_type": "Stochastic",
+  "sense": "minimize",
+  "objective": "net_financing_costs",
+  ...
+  "data": {
+    "accounts_receivable": [1.5, 1.0, 1.4, 2.3, 2.0, 2.0],
+    "planned_payments": [1.8, 1.6, 2.2, 1.2, 0.8, 1.2],
+    "months": ["JAN", "FEB", "MAR", "APR", "MAY", "JUN"],
+    "beginning_cash_balance": 0.4,
+    "min_cash_balance": 0.25,
+    "loan_interest_rate": 0.01,
+    "receivable_loan_rate": 0.015,
+    "cash_interest_rate": 0.005,
+    "payment_discount_loss": 0.02,
+    "receivable_loan_limit": 0.75
+  },
+  ...
+}
+```
+
+### Fluxo de interação
+1. O usuário descreve o problema em linguagem natural, incluindo dados, tabelas, parâmetros, etc.
+2. O Meaning Agent estrutura o problema e os dados em JSON.
+3. O usuário revisa o problema reescrito e os dados extraídos antes de processar.
+4. Se faltar algum dado, o agente pede explicitamente ao usuário.
+5. O JSON é passado para os próximos agentes ou módulos de solução.
+
+---
+
+## (Atualize outras seções conforme necessário para refletir o novo fluxo e a presença do campo 'data'.) 

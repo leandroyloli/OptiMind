@@ -1,0 +1,50 @@
+{
+  "problem_type": "LP",
+  "sense": "maximize",
+  "objective": "3*x + 4*y",
+  "objective_description": "Maximizar o lucro total da produção de produtos A e B",
+  "decision_variables": {
+    "x": {
+      "type": "Real",
+      "description": "Quantidade do produto A a produzir",
+      "bounds": [0, null]
+    },
+    "y": {
+      "type": "Real", 
+      "description": "Quantidade do produto B a produzir",
+      "bounds": [0, null]
+    }
+  },
+  "auxiliary_variables": {
+    "total_production": {
+      "type": "Real",
+      "description": "Produção total (soma de A e B)",
+      "equation": "x + y"
+    },
+    "resource_usage": {
+      "type": "Real",
+      "description": "Uso total de recursos",
+      "equation": "x + 2*y"
+    }
+  },
+  "constraints": [
+    {
+      "expression": "x + 2*y <= 100",
+      "description": "Limite de recursos para produção",
+      "type": "inequality"
+    },
+    {
+      "expression": "x + y <= 80", 
+      "description": "Limite de capacidade total",
+      "type": "inequality"
+    }
+  ],
+  "is_valid_problem": true,
+  "confidence": 0.95,
+  "clarification": "",
+  "business_context": {
+    "domain": "Production Planning",
+    "stakeholders": ["Production Manager", "Operations Team"],
+    "constraints": ["Resource limitations", "Capacity constraints"]
+  }
+} 
