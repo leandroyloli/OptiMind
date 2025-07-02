@@ -113,8 +113,30 @@ Remember: You're a partner, not just a form-filler. Help users think through the
             Processed result (JSON dict)
         """
         try:
-            # Try to parse as JSON
             result = json.loads(response)
+            # Preencher todos os campos obrigatórios se estiverem ausentes
+            required_fields = [
+                "problem_type", "sense", "objective", "objective_description",
+                "decision_variables", "auxiliary_variables", "constraints", "data",
+                "is_valid_problem", "confidence", "clarification", "business_context"
+            ]
+            defaults = {
+                "problem_type": "Unknown",
+                "sense": "maximize",
+                "objective": "",
+                "objective_description": "",
+                "decision_variables": {},
+                "auxiliary_variables": {},
+                "constraints": [],
+                "data": {},
+                "is_valid_problem": False,
+                "confidence": 0.0,
+                "clarification": "",
+                "business_context": {"domain": "", "stakeholders": [], "constraints": []}
+            }
+            for field in required_fields:
+                if field not in result:
+                    result[field] = defaults[field]
             
             # Validate against schema
             is_valid, error = validate_problem_output(result)

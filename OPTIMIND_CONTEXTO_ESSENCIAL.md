@@ -28,7 +28,13 @@ Este documento contém **contexto essencial** que não está nos outros MDs mas 
 - **Benefício**: Detecta erros cedo, permite retry automático
 - **Implementação**: `schemas/problem_schema.json` com validação completa
 
-### 4. Por que Sistema de Autenticação Robusto? ✅ **IMPLEMENTADO**
+### 4. Por que Acervo TOML e Teste Automatizado? ✅ **IMPLEMENTADO**
+- **Problema**: Testes com exemplos artificiais não validam robustez real
+- **Solução**: Acervo de 22 problemas reais em TOML + teste automatizado
+- **Benefício**: Validação contra problemas reais, curadoria contínua, reprodutibilidade
+- **Implementação**: `prompts/problem_list.toml` + `tests/test_all_problems.py`
+
+### 5. Por que Sistema de Autenticação Robusto? ✅ **IMPLEMENTADO**
 - **Problema**: Aplicações web precisam de segurança contra ataques
 - **Solução**: Autenticação com senhas seguras, rate limiting, validação de força
 - **Benefício**: Proteção contra força bruta, credenciais seguras, logs de segurança
@@ -169,6 +175,41 @@ st.text_area(
     height=400  # Interface adaptativa
 )
 ```
+
+### 6. Padrão de Teste Automatizado ✅ **IMPLEMENTADO**
+```python
+# Teste automatizado para todos os problemas do acervo
+def test_meaning_agent_on_all_problems():
+    """Testa o Meaning Agent com todos os problemas"""
+    problems = load_problems()  # Carrega prompts/problem_list.toml
+    agent = MeaningAgent()
+    
+    for problem in problems:
+        response = agent.process_problem(problem['description'])
+        is_valid, validation_errors = validate_problem_output(response)
+        
+        if not is_valid:
+            # Registra falha com detalhes
+            failed_problems.append({
+                'title': problem['title'],
+                'errors': validation_errors,
+                'response': response
+            })
+    
+    # Relatório final com estatísticas
+    print(f"✅ Sucessos: {successful_tests}/{total_tests}")
+    print(f"❌ Falhas: {failed_tests}/{total_tests}")
+
+# Uso: python tests/test_all_problems.py --all
+# Uso: python tests/test_all_problems.py --problem "Título do Problema"
+```
+
+**Benefícios do teste automatizado:**
+- **Validação contra problemas reais**: Não apenas exemplos artificiais
+- **Curadoria contínua**: Novos problemas são automaticamente testados
+- **Reprodutibilidade**: Mesmos problemas, mesmos resultados
+- **Detecção de regressões**: Mudanças no agente são validadas automaticamente
+- **Relatório detalhado**: Estatísticas e erros específicos por problema
 
 ---
 

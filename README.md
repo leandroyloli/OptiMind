@@ -53,6 +53,8 @@ O **OptiMind** é uma plataforma revolucionária que transforma descrições em 
 - **Contexto de chat** para construção passo a passo
 - **Tratamento de mensagens casuais**
 - **Campo `data` obrigatório** para todos os parâmetros
+- **Acervo de problemas real** convertido para TOML (22 problemas)
+- **Teste automatizado completo** para todos os problemas do acervo
 
 ### 🔄 Próximos Blocos (6/9)
 - **Bloco 4**: Pesquisador Agent
@@ -101,6 +103,30 @@ Meaning Agent responde:
   "clarification": "Great! I understand your LP problem..."
 }
 ```
+
+## 🧪 Testes Automatizados
+
+### Teste Completo do Meaning Agent
+```bash
+# Testa todos os problemas do acervo (22 problemas)
+python tests/test_all_problems.py --all
+
+# Testa um problema específico
+python tests/test_all_problems.py --problem "The Extreme Downhill Company"
+```
+
+O teste automatizado valida:
+- ✅ Processamento correto de todos os problemas do acervo real
+- ✅ Validação de schema JSON para cada resposta
+- ✅ Tratamento de erros e exceções
+- ✅ Relatório detalhado de sucessos e falhas
+- ✅ Cobertura completa do Meaning Agent
+
+### Acervo de Problemas
+- **22 problemas reais** convertidos para formato TOML
+- **Problemas clássicos** de otimização (LP, MIP, NLP, Stochastic, etc.)
+- **Dados estruturados** prontos para teste automatizado
+- **Curadoria contínua** via `prompts/problem_list.toml`
 
 ## 🛠️ Instalação
 

@@ -1,0 +1,410 @@
+[[problem]]
+title = "The Extreme Downhill Company"
+description = """Michele Taggart oversees the manufacturing operations at the Extreme Downhill Company (EDC), which makes snowboards and skis. Michele needs to decide how many sets of skis and how many snowboards to make this week.
+
+In the EDC factory, there is a molding machine, which is used to form skis and snowboards using plastic and metal. The molding machine takes three hours to make 100 pairs of skis, or it can make 100 snowboards in two hours.
+
+The factory also has a cutting machine, which is used to sharpen the edges on the products, so they are ready to use. The cutting machine can process 100 pairs of skis in an hour, or it can do 100 snowboards in three hours.
+
+Every snowboard and set of skis have to be loaded into the customized EDC delivery van as soon as it is finished in the factory, because there is no room in the factory to store any of the finished products. The van gets loaded up all week long and then Jason Brown, the driver, makes one trip on Saturday to make deliveries.
+
+EDC makes $40 for every snowboard it sells, and $60 for every pair of skis. Michele wants to make sure she chooses the right mix of the two products so as to make the most money for her company, but she is limited by the following factors:
+
+1. There are only two people who know how to operate the molding machine: Nick Conte and Dave Downing. Michele has it worked out with them so that Nick works in the daytime, and Dave works at night, so between them they keep the machine running most of the time. But even so, the molding machine is only running 115.5 hours every week, which limits the number of products EDC can make in a week.
+
+2. The cutting machine is really on loan from the Brandon-Olofsson Company, and Michele only gets to use it 51 hours per week. This also limits the number of skis and snowboards she can make.
+
+3. The van has a capacity of 48 cubic meters. 100 snowboards take up one cubic meter, and 100 sets of skis take up two cubic meters. Michele has no choice but to use Jason as the driver (it's his van) and so there isn't any point in making more products in a week than can fit into the van.
+
+4. Finally, Michele knows from experience that snowboarding is a relatively new sport, and it is very hard for cool snowboarders to convince their fossilized parents to buy them the equipment they need. She has decided that she will never make more than 1,600 snowboards per week, because she won't be able to sell any more than that.
+
+How many skis and snowboards should EDC manufacture this week?"""
+
+[[problem]]
+title = "Pineapple Pricing"
+description = """Pineapple Inc. is deciding how to price its two lines of laptops, one of which is a light one for travel (which is called Light) and the other is a powerful one (called Power). These products are substitutes (consumers pick between them depending on prices). Based on the data points below, estimate a linear joint demand curve – that is, a demand curve for each product that is linear in each price:
+
+Demand_Power = A_1 + B_1*Price_Power + C_1*Price_Light
+Demand_Light = A_2 + B_2*Price_Power + C_2*Price_Light
+
+| Price of Power | Price of Light | Demand of Power (in thousands) | Demand of Light (in thousands) |
+| 1000           | 1000           | 15166                          | 7311                           |
+| 1500           | 1000           | 12266                          | 7387                           |
+| 2000           | 1000           | 10875                          | 7499                           |
+| 2000           | 1500           | 10222                          | 5992                           |
+| 2500           | 1500           | 7771                           | 6398                           |
+| 3000           | 1500           | 4410                           | 6210                           |
+| 3000           | 2000           | 5320                           | 4431                           |
+
+Use your estimated demand curve to recommend prices for the two products to the CEO of Pineapple Inc. The cost of manufacturing a Light computer is $770 and the cost of manufacturing a Power computer is $930. Make sure the prices you recommend are within the ranges tested ($1000 to $3000 for the Power and $1000 to $2000 for the Light)."""
+
+[[problem]]
+title = "Assortment Recommendations"
+description = """Many online platforms need to decide which products to show on the first page for a given keyword—for example, shoes. One critical aspect of this problem is that products are substitutable and hence capturing the consumers' substitution behavior is important. A widely used consumer choice model is the Multinomial logit (MNL) choice model due to the ground-breaking research by the Nobel Prize Winner in Economics Daniel McFadden in 2000. The basic idea is to represent each product i with a set of features Y_ik. For example, for shoes the features can include price, color, occasion, etc.
+
+Customer j's utility is modeled as:
+u_ij = a_i + sum_k b_k Y_ik + e_j,
+where e_j is a random taste parameter that captures heterogeneous customer tastes (for the MNL choice model it is assumed that it follows a Gumbel distribution for tractability reasons). For simplicity, we can also write u_ij = v_i + e_j. The nice thing about this choice model is that it allows us to capture the choice probability of choosing a certain product i from an assortment of available products S.
+
+In particular, given a set of products S, the probability that customer picks product i is given by:
+P_i(S) = exp(v_i) / (1 + sum_{s in S} exp(v_s)) if product i is offered in the assortment S
+P_i(S) = 0 if product i is not offered in assortment S
+
+Moreover, denoting the no-purchase option by product i=0, the probability of no-purchase is given by:
+P_0(S) = 1 / (1 + sum_{s in S} exp(v_s))
+
+Now that we can capture the consumer choice model, a common question that many retailers face is how to optimally select the best assortment to maximize the expected profit given that different products have different contribution margins. An important trade-off that assortment managers should consider is that if they only show the most profitable item, customers may decide not to purchase anything; meanwhile if they show a wide assortment including products that are less profitable, there is a cannibalization effect since customers might substitute from highly profitable items to less profitable item."""
+
+[[problem]]
+title = "Phone Survey"
+description = """For a phone survey, a marketing research group needs to contact at least 1500 young women, 1500 young men, 2100 older women, and 2100 older men. It costs $0.20 to make a call to a landline and $0.50 to make a call to a cell phone since, for regulatory reasons, cell phone numbers need to be dialed manually. The table below lists the typical demographics for people answering landline and cell phones calls. Because of a limited staff, at most half of all phone calls can be cell phone calls.
+
+| Person Responding | Percentage of Landline Calls | Percentage of Cell Phone Calls |
+| ----------------- | ---------------------------- | ------------------------------ |
+| Young Women       | 6%                           | 20%                            |
+| Young Men         | 8%                           | 20%                            |
+| Older Women       | 25%                          | 8%                             |
+| Older Men         | 22%                          | 9%                             |
+| No Answer         | 39%                          | 43%                            |
+"""
+
+[[problem]]
+title = "Cash Balance with Financing"
+description = """The CFO for Eagle Beach Wear and Gift Shop is in the process of planning for the company's cash flows for the next 6 months. The following table summarizes the expected accounts receivables and planned payments for each of these months (in $100,000s).
+
+Month:             JAN   FEB   MAR   APR   MAY   JUN
+-----------------------------------------------------
+Accounts Receivable: 1.5   1.0   1.4   2.3   2.0   2.0
+Planned Payments:     1.8   1.6   2.2   1.2   0.8   1.2
+
+The company currently has a beginning cash balance of $40,000 and desires to maintain a balance of at least $25,000 in cash at the end of each month. To accomplish this, the company has a number of ways of obtaining short-term funds:
+
+Delay Payments. In any month, the company's suppliers permit it to delay any or all payments for 1 month. However, for this consideration, the company forfeits a 2% discount that normally applies when payments are made on time. (Loss of this 2% discount is, in effect, a financing cost.)
+
+Borrow Against Accounts Receivables. In any month, the company's bank will loan it up to 75% of the accounts receivable balances due that month. These loans must be repaid in the following month and incur an interest charge of 1.5%.
+
+Short-Term Loan. At the beginning of January, the company's bank will also give it a 6-month loan to be repaid in a lump sum at the end of June. Interest on this loan is 1% per month and is payable at the end of each month.
+
+Assume the company earns 0.5% interest each month on cash held at the beginning of the month.
+
+Create a spreadsheet model the company can use to determine the least costly cash management plan (i.e., minimal net financing costs) for this 6-month period. What is the optimal solution?"""
+
+[[problem]]
+title = "RM Inn Hotel"
+description = """Consider the RM Inn Hotel in downtown Chicago, targeting business travelers during weekdays. The following tables show the remaining rooms and demand forecasts 3 weeks before the target days. The target days correspond to four consecutive nights: Monday (night 1) through Thursday (night 4).
+
+Products are labeled as pairs (j,k), with j being the first night of the stay, and k being the last night. For instance, product "13" means "nights 1,2, and 3, with check-in on Monday and checkout on Thursday". Product "2" represents a single Tuesday night.
+
+| PRODUCT | PRICE FOR WHOLE STAY | MEAN DEMAND |
+| ------- | -------------------- | ----------- |
+| 1       | 179                  | 40          |
+| 12      | 349                  | 35          |
+| 13      | 499                  | 28          |
+| 14      | 649                  | 25          |
+| 2       | 179                  | 37          |
+| 23      | 349                  | 32          |
+| 24      | 499                  | 23          |
+| 3       | 179                  | 27          |
+| 34      | 349                  | 25          |
+| 4       | 179                  | 35          |
+
+| NIGHT     | CAPACITY |
+| --------- | -------- |
+| MONDAY    | 100      |
+| TUESDAY   | 95       |
+| WEDNESDAY | 90       |
+| THURSDAY  | 90       |
+
+Here treat the stays as products and the nights as the resources. Use bid-price controls to determine which products to be made available and which ones to block."""
+
+[[problem]]
+title = "Scheduling Professors"
+description = """Three professors must be assigned to teach six sections of finance. Each professor must teach two sections of finance, and each has ranked the six time periods during which finance is taught, as shown in the table below. A rating of 10 means that the professor wants to teach at that time, and a ranking of 1 means that he or she does not want to teach at that time.
+
+|               | 9 A.M. | 10 A.M. | 11 A.M. | 1 P.M. | 2 P.M. | 3 P.M. |
+|---------------|--------|---------|---------|--------|--------|--------|
+| PROFESSOR 1   |   8    |    7    |    6    |   5    |   7    |   6    |
+| PROFESSOR 2   |   9    |    9    |    8    |   8    |   4    |   4    |
+| PROFESSOR 3   |   7    |    6    |    5    |   6    |   9    |   5    |
+
+Preferences for Teaching Finance
+
+Determine an assignment of professors to sections that maximizes the total satisfaction of the professors."""
+
+[[problem]]
+title = "Beating the Market"
+description = """A common goal of portfolio managers is to beat the market. If we assume that past performance is somewhat of an indicator of the future, then picking a portfolio that beat the market most often in the past might yield a portfolio that will more than likely beat the market in the future. We say the portfolio beats the market if its performance is at least as good as the market.
+
+Consider a portfolio of five large stocks traded on the New York Stock Exchange (NYSE): Disney (DIS), Boeing (BA), General Electric (GE), Procter & Gamble (PG) and McDonald's (MCD). The quarterly performance (return) of each of these stocks over a six-year period is shown below. The performance of the market, as measured by the NYSE Composite Index, is also shown below.
+
+| Quarter | Year |  DIS   |   BA   |   GE   |   PG   |  MCD   | Market |
+|---------|------|--------|--------|--------|--------|--------|--------|
+|   Q4    |  6   | 0.38%  | 3.77%  | 4.85%  | -2.15% | 2.74%  | 1.59%  |
+|   Q3    |  6   | -4.17% | 3.34%  | -2.21% | 13.29% | 20.71% | 5.75%  |
+|   Q2    |  6   | -12.35%| 13.36% | -3.31% | 0.04%  | -10.88%| 0.70%  |
+|   Q1    |  6   | 3.34%  | 13.45% | -0.57% | -3.33% | -2.90% | -1.14% |
+|   Q4    |  5   | 24.37% | 0.67%  | 9.32%  | 2.26%  | 16.50% | 10.35% |
+|   Q3    |  5   | -11.52%| 1.45%  | 4.26%  | 0.13%  | 7.84%  | -0.50% |
+|   Q2    |  5   | 2.00%  | 24.99% | 6.80%  | 4.31%  | -9.02% | 0.06%  |
+|   Q1    |  5   | 7.12%  | -2.17% | -0.89% | 5.49%  | 15.07% | 2.09%  |
+|   Q4    |  4   | 16.79% | 23.28% | 4.61%  | 8.12%  | 7.13%  | 14.53% |
+|   Q3    |  4   | 2.08%  | 0.55%  | 4.60%  | 4.64%  | 6.70%  | 2.52%  |
+|   Q2    |  4   | 16.09% | 37.76% | 13.17% | 0.60%  | 52.55% | 16.38% |
+|   Q1    |  4   | 4.36%  | -2.61% | 5.59%  | 4.11%  | -10.05%| -5.40% |
+|   Q4    |  3   | 9.02%  | -2.84% | -0.49% | -3.42% | -7.70% | 6.16%  |
+|   Q3    |  3   | -19.86%| -23.80%| -14.56%| 0.61%  | -37.92%| -16.44%|
+|   Q2    |  3   | -18.15%| -6.39% | -21.84%| 0.32%  | 2.51%  | -11.22%|
+|   Q1    |  3   | 11.42% | 24.95% | -6.24% | 14.39% | 4.85%  | 1.80%  |
+|   Q4    |  2   | 12.44% | 16.34% | 8.23%  | 9.29%  | -1.51% | 8.45%  |
+|   Q3    |  2   | 25.55% | -3.97% | -23.50%| 14.73% | 0.28%  | -12.53%|
+|   Q2    |  2   | 1.03%  | 0.08%  | 17.06% | 2.54%  | 1.91%  | 4.38%  |
+|   Q1    |  2   | -1.20% | -15.34%| -12.37%| -19.82%| -21.90%| -9.32% |
+|   Q4    |  1   | -23.81%| 2.55%  | -16.81%| 17.65% | 13.37% | -0.93% |
+|   Q3    |  1   | -1.45% | 54.71% | 9.62%  | 18.77% | -8.36% | 3.13%  |
+|   Q2    |  1   | -5.91% | 11.00% | 2.16%  | 0.48%  | -11.87%| -0.74% |
+|   Q1    |  1   | 41.04% | -8.47% | 0.87%  | -48.07%| -7.29% | -0.40% |
+
+What mix of these five stocks will yield a portfolio that beats the market on most quarters?"""
+
+[[problem]]
+title = "Radio Ads"
+description = """Music radio WABC has commercials of the following lengths (in seconds): 15, 15, 20, 25, 30, 35, 40, 57. The commercials must be assigned to 60-second breaks. What is the fewest number of breaks that are needed to air all of the commercials?"""
+
+[[problem]]
+title = "Eight Queens"
+description = """This is a classic puzzle: place 8 queens on a chessboard (which has 8 rows and 8 columns) in such a way that no two queens can attack each other. A queen can attack a piece that is on the same row, column or diagonal as itself."""
+
+[[problem]]
+title = "Gribbin Brewing"
+description = """Regional brewer Andrew Gribbin distributes kegs of his famous beer through three warehouses in the greater New York City area, with current supplies as shown in Figure 1.
+
+On a Thursday morning, he has his usual weekly orders from his four loyal customers, as shown in Figure 2. Tracy Chapman, Gribbin's shipping manager, needs to determine the most cost-efficient plan to deliver beer to these four customers, knowing that the costs per keg are different for each possible combination of warehouse and customer (see Figure 3). What is the optimal shipping plan?
+
+Figure 1: Warehouses and Supply
+| Warehouses | Supply |
+|------------|--------|
+| Hoboken    | 80     |
+| Bronx      | 145    |
+| Brooklyn   | 120    |
+
+Figure 2: Bars and Demand
+| Bars                    | Demand |
+|-------------------------|--------|
+| Der Ratkeller           | 80     |
+| McGoldrick's Pub        | 65     |
+| Night Train Bar & Grill | 70     |
+| Amity Hall              | 85     |
+
+Figure 3: Shipping Costs per Keg
+|             | Ratkeller | McGoldrick's | Night Train | Amity |
+|-------------|-----------|--------------|-------------|--------|
+| Hoboken     | $4.64     | $5.13        | $6.54       | $8.67  |
+| Bronx       | $3.52     | $4.16        | $6.90       | $7.91  |
+| Brooklyn    | $9.95     | $6.82        | $3.88       | $6.85  |"""
+
+[[problem]]
+title = "Currency Conversion"
+description = """Suppose there are 5 currencies available (US Dollars, Japanese Yens, British Pounds, Swiss Francs and Euros) and assume that one unit of currency i can be exchanged for r_ij units of currency j.
+
+You work in a hedge fund, and you found a profitable investment opportunity in a market in Germany and to invest in it, you need to convert as much money as you can from dollars (currency 1) to euros (currency 5).
+
+You have access to 10 million dollars that you can use to make this investment. However, your hedge fund also implements controls that limit your ability to buy foreign currencies. You cannot trade more than K_ij from currency i to currency j in a single day, where K_ij is measured in currency i.
+
+Can you create a linear optimization model to find the maximum amount of euros that you can obtain within a single day?"""
+
+[[problem]]
+title = "Portfolio Optimization"
+description = """It is now a common practice for professional managers of large stock portfolios to use algorithms based partially on nonlinear programming to guide them. Because investors are concerned about both the expected return (gain) and the risk associated with their investments, nonlinear programming is used to determine a portfolio that, under certain assumptions, provides an optimal trade-off between these two factors. This approach is based largely on ground-breaking research done by Harry Markowitz and William Sharpe that helped them win the 1990 Nobel Prize in economics.
+
+Part (a): To illustrate this approach, we now will focus on a small numerical example where just three stocks are being considered for inclusion in the portfolio. The following table gives the needed data for these three stocks.
+
+| Stock | Expected Return | Risk (Standard Deviation) |
+|-------|------------------|---------------------------|
+|   1   |       21%        |           25%             |
+|   2   |       30         |           45              |
+|   3   |        8         |            5              |
+
+| Pair of Stocks | Joint Risk per Stock (Covariance) |
+|----------------|-----------------------------------|
+| 1 and 2        | 0.040                             |
+| 1 and 3        | –0.005                            |
+| 2 and 3        | –0.010                            |
+
+What is the portfolio that will minimize the risk subject to achieving at least an 18% expected return?
+
+Part (b): The data in the table above is typically obtained by taking samples of the returns of the stocks from a number of previous years and then calculating the averages, standard deviations, and covariance for these samples. Adjustments in the resulting estimate of at least the expected return of a stock also may be made if it appears that the current prospects for the stock are somewhat different than in previous years.
+
+Use the stock market data in the template file to estimate the parameters of the model and use those estimates to determine an optimal portfolio."""
+
+[[problem]]
+title = "Pricing and Demand Curve Estimation"
+description = """Travelers who buy their tickets in the week before a flight tend to be less price sensitive than customers who buy ahead of time. This is true because most travelers who buy "last minute" are business customers or are traveling due to an emergency. Therefore, airlines know they can charge higher prices for tickets sold the week before a flight takes off.
+
+Your job is to help an airline find the optimal prices for a given flight. Suppose an airline has estimated demand for different prices for both advance and "last minute" purchases. The estimated data is shown in the table below.
+
+| Price | Advance Purchases | "Last Minute" Purchases |
+|-------|--------------------|--------------------------|
+| $200  | 234                | 150                      |
+| $300  | 187                | 105                      |
+| $400  | 127                | 82                       |
+| $500  | 82                 | 63                       |
+| $600  | 60                 | 49                       |
+| $700  | 45                 | 35                       |
+| $800  | 37                 | 27                       |
+
+This flight is served by a Boeing 777 with capacity for 200 travelers. The variable cost per passenger (for fuel) is $30.
+
+Determine what the prices of the two types of tickets should be so as to maximize the profit for the airline. (Hint: 1) Find linear demand curves. Demand curve is a function that relates demand volume to price. 2) Given the demand curves, find the optimal prices.)"""
+
+[[problem]]
+title = "Inventory Optimization"
+description = """Rick, manager of X university bookstore, wants to order "NCAA elite eight" T-shirts to celebrate their men's basketball team's recent achievement. Based on his experience, he estimated demand distribution will be:
+
+| Demand  | Probability |
+|---------|-------------|
+|  80     |    0.20     |
+|  90     |    0.25     |
+| 100     |    0.30     |
+| 110     |    0.15     |
+| 120     |    0.10     |
+
+Rick plans to sell the T-shirt for $20 each. He pays his supplier $8 for each shirt and can sell any unsold shirts at $2 each.
+
+a) Determine how many T-shirts Rick should order to maximize his expected profit.
+
+b) How many T-shirts should Rick order if he wants to minimize his risk, while maintaining an expected profit of at least $1050?
+
+c) Let's consider now a multi-product variant of the same problem. Rick, manager of X university bookstore, wants to order "NCAA elite eight" T-shirts and hats to celebrate their men's basketball team's recent achievement. Based on his experience, he estimated demand distribution for t-shirts and hats will be:
+
+| T-shirts Demand | Hats Demand | Probability |
+|-----------------|-------------|-------------|
+|      80         |    200      |    0.20     |
+|      90         |    180      |    0.25     |
+|     100         |    175      |    0.30     |
+|     110         |    150      |    0.15     |
+|     120         |    150      |    0.10     |
+
+Selling price: $20/each (T-shirt), $10/each (hat)
+Ordering cost: $8/each (T-shirt), $5/each (hat)
+Salvage value: $2/each (T-shirt), $2/each (hat)
+
+Determine how many T-shirts and hats Rick should order to minimize the risk, so that the expected profit is at least $1900."""
+
+[[problem]]
+title = "Profit Forecasting: Freddie the Newsvendor"
+description = """Freddie the newsvendor runs a newsstand in a prominent downtown location of a major city. He makes most of his money selling the Financial Journal. Freddie sells anywhere between 40 and 70 copies a day, and the frequency of his sales numbers between 40 and 70 are roughly equal.
+
+Each copy costs Freddie $1.50 and he charges his customers $2.50. He also receives a refund of $0.50 per unsold copy. Suppose he orders 60 copies.
+
+a) How much should Freddie expect to make in a day?
+
+b) He'd like to take home at least $40 at the end of the day. What is the probability of that happening?
+
+c) What is the likelihood that Freddie ends up with leftover newspaper?"""
+
+[[problem]]
+title = "Saving for Retirement"
+description = """Lynn Price recently completed her MBA and accepted a job with a fast-growing mobile telephone service company in Europe. Although she likes her job, she is also looking forward to retiring one day. To ensure that her retirement is comfortable, Lynn intends to put $4500 of her salary into a tax-sheltered retirement fund in the US each year. Lynn is not certain what annual rate of return this investment will earn, but she expects that the rate could be modeled appropriately as a normally distributed random variable with a mean of 10% and standard deviation of 15%.
+
+If Lynn is 30 years old, how much money should she expect to have in her retirement account at age 60? What is the probability that Lynn will have more than $900,000 in her retirement fund when she is 60? Assume she just turned 30, she cares about her funds at the end of the year when she will be 60 and that she contributes her $4500 at the start of each year."""
+
+[[problem]]
+title = "Firm Valuation"
+description = """You have been asked to evaluate the investment opportunity of buying a small firm. The financial information you have about the firm is:
+
+* Revenue each year could be as low as $60,000 or as high as $125,000. The most likely amount is $100,000. Revenues in successive years are independent.
+* Fixed operating costs are $30,000 a year. Variable operating costs each year could be as low as 55% of revenues or as high as 75%, with any values in between being equally likely. Costs in successive years are independent.
+* The tax rate in any year will be 36% with probability 0.4 and 40% with probability 0.6, depending on factors outside the buyer's control. In the case of negative taxable income, the buyer will have other income, so the tax effects represented in the model will still hold.
+* The discount rate you should use is 10% and the time horizon is 5 years.
+
+Your tasks are:
+
+1. Build a simulation model to study the NPV of this firm including the uncertainty factors.
+2. Estimate the probability that the NPV will be negative.
+3. Estimate the probability of positive cash flow in all five years."""
+
+[[problem]]
+title = "Project Management"
+description = """Consider the following project (all durations are in weeks).
+
+| ACTIVITY | PREDECESSOR | OPTIMISTIC | MOST LIKELY | PESSIMISTIC |
+|----------|-------------|------------|-------------|-------------|
+|    A     | none        |     1      |     2       |     3       |
+|    B     | none        |     1      |    3.5      |    4.2      |
+|    C     | A           |     3      |     6       |     9       |
+|    D     | B, C        |   0.2      |    0.6      |     1       |
+|    E     | B, C        |     2      |     4       |     6       |
+|    F     | A           |     4      |     6       |     8       |
+|    G     | D           |     1      |    1.5      |     2       |
+|    H     | E, F        |     1      |     2       |     3       |
+
+a) What is the probability that the project duration exceeds 16 weeks?
+
+The cost of developing this project is equal to $3000. On the other hand, the revenue you can make out of this project depends on the time you (as project manager) promise to complete it. More specifically, you know that the revenues are given by:
+
+Revenues = 30000 – 1000 × (Project duration (in weeks) that you quote)
+
+However, if the duration of the project ends up being longer than the duration that you quote then there is a fixed penalty of $8000 that you will need to pay.
+
+For example, if you quote a duration of 12 weeks and the project takes 12 or fewer weeks then your net profits are $18000 on revenues minus $3000 on fixed costs (that is, $15000). However, if the duration exceeds 12 weeks, then your profits are $18000 on revenues minus $3000 on fixed costs minus $8000 on penalty ($7000).
+
+b) What is the optimal duration that you should quote?
+
+c) Suppose you want to make sure the probability of having to pay a penalty is at most 10%. How would you add such a constraint?"""
+
+[[problem]]
+title = "New Product Development"
+description = """There are a lot of uncertainties involved when a company is considering the development of a new product and its introduction to the market. The company needs to decide on including certain features, while their exact effects on the sales of the product are not known a priori.
+
+Our company is contemplating the development and introduction of a new smart watch to the market. The company is mainly thinking about the following features for the watch:
+
+1. Adding built-in GPS and Wi-Fi that operates independently (and not rely on a connecting device).
+2. Making it modular, so that it consists of replaceable and interchangeable modules.
+3. Adding a small built-in camera.
+4. Adding a high-end battery, so that it lasts twice as long as the competing products.
+
+Based on preliminary studies, the company has figured out that the profit for this watch will be determined by a random variable P via the following formula. All the figures are in million dollars.
+
+P = P_baseline + P_GPS,Wi-Fi + P_modular + P_camera + P_battery
+
+where:
+P_baseline =
+        N(200, 10)        with probability 0.4
+        N(120, 15)        with probability 0.6
+
+P_GPS,Wi-Fi = N(40, 8)
+P_modular = N(35, 20)
+P_camera = N(20, 5)
+P_battery = N(15, 8)
+
+However, there is a cost of investment (including the production cost and the R&D cost) for each of the above features: adding built-in GPS and Wi-Fi costs $30 million, making the phone modular costs $32 million, adding a camera costs $16 million, and including a high-end battery costs $10 million.
+
+1. What features should the company include in order to maximize its expected profit?
+
+2. What if the company wants to keep standard deviation of the profit below $45 million?"""
+
+[[problem]]
+title = "Optimizing Liquidity"
+description = """You run an endowment fund for a university that currently has 1 billion in investments. You can make both liquid investments (stock and bond market) and illiquid investments (real estate and hedge funds). You can only offload your illiquid investments once a year.
+
+The university's revenues this year will be distributed according to a normal distribution, with mean 400 million and standard deviation of 50 million. The university will also get donations, which will be distributed uniformly between 100 and 250 million. The operating cost of the university is normally distributed, with mean 650 million and standard deviation of 150 million.
+
+Your predictions for how these investments will behave over the next year are given in the table below (assume normal distribution):
+
+| Investment | Expected Return | Standard Deviation |
+|------------|------------------|---------------------|
+| Liquid     |       4%         |         8%          |
+| Illiquid   |       7%         |        11%          |
+
+Suppose that if the university runs out of money during the year, it will lose the equivalent of 100 million dollars due to borrowing costs and bad publicity. How much of the endowment should be invested in illiquid investments?"""
+
+[[problem]]
+title = "Transcontinental Airlines: Overbooking"
+description = """Transcontinental Airlines has a daily flight from San Francisco to Chicago. There are 140 coach seats and 10 business seats available. The profit per seat sold is $300 and $1000 for coach and business seats respectively.
+
+Demand is uniformly distributed between 2 and 18 for business seats and between 100 and 220 seats for coach seats. This is a nonrefundable fare, so no-shows forfeit the entire fare. Each customer has an 80% probability to show up for his or her flight.
+
+If we overbook this flight and must deny boarding to a passenger, the total cost to Transcontinental will be $500 per coach passenger and $2000 per business passenger. If there are available seats in business class, we can upgrade customers from coach at no cost. However, business customers cannot be downgraded to coach.
+
+1. What is the expected profit for the Transcontinental if it does not overbook?
+2. Determine how many tickets Transcontinental should sell in each customer class if it can overbook.""" 

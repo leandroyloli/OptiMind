@@ -161,7 +161,15 @@ Implementar interface para entrada de problemas de otimização.
 - [x] Validação expandida para restrições de negócio (at least, maintain, balance, etc.)
 - [x] Remoção de validação de sucesso (delegada para agente)
 
-#### 2.4 Estado da Aplicação ✅ **CONCLUÍDO**
+#### 2.4 Teste Automatizado com Acervo Real ✅ **CONCLUÍDO**
+- [x] Converter acervo de problemas para formato TOML (22 problemas)
+- [x] Criar teste automatizado para todos os problemas (`tests/test_all_problems.py`)
+- [x] Implementar validação de schema para cada resposta
+- [x] Adicionar interface CLI para teste individual ou em lote
+- [x] Gerar relatório detalhado de sucessos e falhas
+- [x] Remover teste obsoleto (`tests/test_problems.py`)
+
+#### 2.5 Estado da Aplicação ✅ **CONCLUÍDO**
 - [x] Implementar `st.session_state` para dados
 - [x] Persistir dados entre páginas
 - [x] Limpar estado ao iniciar novo job
@@ -185,6 +193,10 @@ def test_bloco_2():
     
     # 4. Testes automatizados ✅
     assert run_input_interface_tests() == "16 passed"  # python -m pytest tests/test_input_interface.py
+    
+    # 5. Teste com acervo real ✅
+    assert run_all_problems_test() == "22 problems tested"  # python tests/test_all_problems.py --all
+    assert toml_problems_loaded() == 22  # prompts/problem_list.toml
 ```
 
 ### 🚀 Resultado Esperado ✅ **CONCLUÍDO**
@@ -195,6 +207,9 @@ def test_bloco_2():
 - **Suite de testes robusta (16 testes passando)**
 - **Validação expandida para restrições de negócio**
 - **Interface otimizada para interação com Meaning Agent**
+- **Acervo de problemas real em TOML (22 problemas)**
+- **Teste automatizado completo para todos os problemas**
+- **Curadoria contínua via teste automatizado**
 
 ---
 

@@ -74,6 +74,27 @@ section[data-testid="stSidebar"] ul[data-testid="stSidebarNav"] {
 </style>
 """, unsafe_allow_html=True)
 
+type_descriptions = {
+    'LP': 'Linear Programming',
+    'MIP': 'Mixed Integer Programming',
+    'NLP': 'Nonlinear Programming',
+    'Stochastic': 'Stochastic/Uncertainty',
+    'Combinatorial': 'Combinatorial Optimization',
+    'Network': 'Network Optimization',
+    'Meta-Heuristics': 'Meta-Heuristic Methods',
+    'Simulation': 'Simulation-Based Optimization',
+    'Scheduling': 'Scheduling/Timetabling',
+    'Routing': 'Routing/Path Optimization',
+    'Assignment': 'Assignment/Matching',
+    'Inventory': 'Inventory/Stock Optimization',
+    'Portfolio': 'Portfolio/Financial Optimization',
+    'GameTheory': 'Game Theory/Strategic',
+    'Robust': 'Robust Optimization',
+    'Dynamic': 'Dynamic/Sequential Optimization',
+    'MultiObjective': 'Multi-Objective Optimization',
+    'Unknown': 'Unknown Type'
+}
+
 def get_example_problems():
     """Return example optimization problems"""
     return [
@@ -121,11 +142,13 @@ def display_problem_summary(problem_data):
         
         # Problem type and objective
         problem_type = problem_data.get('problem_type', 'Unknown')
+        # Buscar descrição do tipo, se disponível
+        type_desc = type_descriptions.get(problem_type, 'Unknown Type')
         sense = problem_data.get('sense', 'maximize')
         objective = problem_data.get('objective', '')
         objective_desc = problem_data.get('objective_description', '')
         
-        st.markdown(f"**Problem Type:** {problem_type}")
+        st.markdown(f"**Problem Type:** {problem_type}, {type_desc}")
         st.markdown(f"**Objective:** {sense} {objective}")
         if objective_desc:
             st.markdown(f"**Description:** {objective_desc}")
@@ -158,6 +181,12 @@ def display_problem_summary(problem_data):
                 description = constraint.get('description', 'No description')
                 constraint_type = constraint.get('type', 'Unknown')
                 st.markdown(f"{i}. **{expression}** ({constraint_type}): {description}")
+        
+        # Mostrar o campo data
+        data = problem_data.get('data', {})
+        if data:
+            st.markdown("**Data:**")
+            st.json(data)
         
         st.markdown("---")
         st.info("💡 **Please review the problem summary above. If everything looks correct, you can proceed to processing. If you need any adjustments, continue the conversation with the Meaning Agent.**")
@@ -257,10 +286,11 @@ def main():
                 st.markdown("---")
                 st.markdown("### 📋 Problem Summary")
                 problem_type = problem_data.get('problem_type', 'Unknown')
+                type_desc = type_descriptions.get(problem_type, 'Unknown Type')
                 sense = problem_data.get('sense', 'maximize')
                 objective = problem_data.get('objective', '')
                 objective_desc = problem_data.get('objective_description', '')
-                st.markdown(f"**Problem Type:** {problem_type}")
+                st.markdown(f"**Problem Type:** {problem_type}, {type_desc}")
                 st.markdown(f"**Objective:** {sense} {objective}")
                 if objective_desc:
                     st.markdown(f"**Description:** {objective_desc}")
@@ -289,6 +319,11 @@ def main():
                         description = constraint.get('description', 'No description')
                         constraint_type = constraint.get('type', 'Unknown')
                         st.markdown(f"{i}. **{expression}** ({constraint_type}): {description}")
+                # Mostrar o campo data
+                data = problem_data.get('data', {})
+                if data:
+                    st.markdown("**Data:**")
+                    st.json(data)
                 st.markdown("---")
                 st.info("💡 **Please review the problem summary above. If everything looks correct, you can proceed to processing. If you need any adjustments, continue the conversation with the Meaning Agent.**")
     

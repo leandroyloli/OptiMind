@@ -179,6 +179,7 @@ def test_casual_messages():
             problem_data = result['result']
             print(f"✅ Response: {problem_data.get('clarification', 'No clarification')[:50]}...")
             print(f"   Valid problem: {problem_data.get('is_valid_problem', False)}")
+            assert problem_data.get('sense') == "maximize"
         else:
             print(f"❌ Failed: {result.get('error', 'Unknown error')}")
     
@@ -209,8 +210,58 @@ def test_financial_consistency():
     
     print("\n🎉 Financial Consistency testing completed!")
 
+def test_meaning_agent_extracts_all_data():
+    agent = MeaningAgent()
+    user_input = (
+        "The following table summarizes the expected accounts receivables and planned payments for each of these months (in $100,000s).\n"
+        "Month: JAN FEB MAR APR MAY JUN\n"
+        "Accounts Receivable: 1.5 1.0 1.4 2.3 2.0 2.0\n"
+        "Planned Payments: 1.8 1.6 2.2 1.2 0.8 1.2\n"
+        "The company currently has a beginning cash balance of $40,000 and desires to maintain a balance of at least $25,000 in cash at the end of each month.\n"
+        "The company's bank will loan it up to 75% of the accounts receivable balances due that month. These loans must be repaid in the following month and incur an interest charge of 1.5%.\n"
+        "At the beginning of January, the company's bank will also give it a 6-month loan to be repaid in a lump sum at the end of June. Interest on this loan is 1% per month and is payable at the end of each month.\n"
+        "Assume the company earns 0.5% interest each month on cash held at the beginning of the month.\n"
+        "Loss of 2% discount if payments are delayed."
+    )
+    result = agent.process_problem(user_input)
+    data = result['result'].get('data', {})
+    assert data.get('months') == ["JAN", "FEB", "MAR", "APR", "MAY", "JUN"]
+    assert data.get('accounts_receivable') == [1.5, 1.0, 1.4, 2.3, 2.0, 2.0]
+    assert data.get('planned_payments') == [1.8, 1.6, 2.2, 1.2, 0.8, 1.2]
+    assert data.get('beginning_cash_balance') == 0.4 or data.get('beginning_cash_balance') == 40000
+    assert data.get('min_cash_balance') == 0.25 or data.get('min_cash_balance') == 25000
+    assert data.get('receivable_loan_interest') == 0.015
+    assert data.get('short_term_loan_interest') == 0.01
+    assert data.get('cash_interest_rate') == 0.005
+    assert data.get('payment_discount_loss') == 0.02
+    assert data.get('receivable_loan_limit') == 0.75
+
+def test_meaning_agent_greeting_fields():
+    agent = MeaningAgent()
+    user_input = "Good afternoon!"
+    result = agent.process_problem(user_input)
+    response = result['result']
+    required_fields = [
+        "problem_type", "sense", "objective", "objective_description",
+        "decision_variables", "auxiliary_variables", "constraints", "data",
+        "is_valid_problem", "confidence", "clarification", "business_context"
+    ]
+    for field in required_fields:
+        assert field in response, f"Missing required field: {field}"
+    # Check some defaults
+    assert response["problem_type"] == "Unknown"
+    assert response["is_valid_problem"] is False
+    assert isinstance(response["decision_variables"], dict)
+    assert isinstance(response["auxiliary_variables"], dict)
+    assert isinstance(response["constraints"], list)
+    assert isinstance(response["data"], dict)
+    assert isinstance(response["business_context"], dict)
+    assert response["sense"] == "maximize"
+
 if __name__ == "__main__":
     test_meaning_agent()
     test_chat_context()
     test_casual_messages()
-    test_financial_consistency() 
+    test_financial_consistency()
+    test_meaning_agent_extracts_all_data()
+    test_meaning_agent_greeting_fields() 

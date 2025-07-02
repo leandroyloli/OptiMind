@@ -129,12 +129,16 @@ O **OptiMind** é uma plataforma de otimização assistida por IA que transforma
 - **Validação visual**: Mostra tipo de problema, confiança, variáveis, restrições
 - **Continuidade**: Permite continuar a conversa para ajustar ou adicionar dados
 
-#### 2.2.4 Testes Robustos (`tests/test_meaning_agent.py`)
+#### 2.2.4 Testes Robustos (`tests/test_all_problems.py`)
+- **Teste automatizado completo**: Valida todos os 22 problemas do acervo real
 - **Testes de casos clássicos**: LP simples, com variáveis auxiliares, minimização
 - **Testes de contexto**: Construção passo a passo de problemas
 - **Testes de mensagens casuais**: Respostas amigáveis a saudações
 - **Validação de schema**: Toda saída é validada contra o schema JSON
 - **Testes de consistência**: Verificação de dados financeiros e unidades
+- **Acervo TOML estruturado**: `prompts/problem_list.toml` com problemas reais
+- **Relatório detalhado**: Estatísticas de sucesso/falha para cada problema
+- **Interface CLI**: Suporte a teste individual ou em lote
 
 ### 2.3 Sistema MCP (MetaController Planner)
 

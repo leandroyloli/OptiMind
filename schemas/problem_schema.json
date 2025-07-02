@@ -18,8 +18,27 @@
   ],
   "properties": {
     "problem_type": {
-      "enum": ["LP", "MIP", "NLP", "Stochastic", "Unknown"],
-      "description": "Tipo do problema de otimização"
+      "enum": [
+        "LP",
+        "MIP",
+        "NLP",
+        "Stochastic",
+        "Combinatorial",
+        "Network",
+        "Meta-Heuristics",
+        "Simulation",
+        "Scheduling",
+        "Routing",
+        "Assignment",
+        "Inventory",
+        "Portfolio",
+        "GameTheory",
+        "Robust",
+        "Dynamic",
+        "MultiObjective",
+        "Unknown"
+      ],
+      "description": "Tipo do problema de otimização (Linear, Inteiro, Não-linear, Estocástico, Combinatório, Rede, Meta-heurístico, Simulação, Escalonamento, Roteamento, Atribuição, Inventário, Portfólio, Teoria dos Jogos, Robusto, Dinâmico, Multiobjetivo, Desconhecido)"
     },
     "sense": {
       "enum": ["maximize", "minimize"],
