@@ -4,6 +4,74 @@
 
 O **OptiMind** é uma plataforma de otimização assistida por IA que transforma descrições em linguagem natural de problemas de otimização em soluções matemáticas completas, código executável e insights de negócio. A arquitetura utiliza um pipeline multi-agente orquestrado pelo PraisonAI, com interface Streamlit e modelagem Pyomo.
 
+## 🚀 Atualização UX/UI e Persistência (2025-07) ✅ **IMPLEMENTADO**
+
+- **Novo fluxo de chat**: ✅ Usuário interage com o Meaning Agent, recebe sugestões/refinamentos do Researcher Agent, e vê mensagens de todos os agentes do pipeline no histórico do chat.
+- **Pipeline semi-manual**: ✅ Só há um clique necessário para processar o pipeline completo ("Start Optimization"), o resto é automático.
+- **Mensagens de todos os agentes**: ✅ Cada etapa do pipeline (Meaning, Researcher, Mathematician, Formulator, Executor, Interpreter, Auditor) aparece como mensagem no chat, com histórico completo.
+- **Página de resultados dedicada**: ✅ Após o processamento, o usuário é redirecionado para uma página de resultados, com expanders (toggles) colapsados para cada agente mostrando o JSON de saída.
+- **Página de histórico**: ✅ Mostra todos os jobs em um DataFrame filtrável (usando `dataframe_explorer` do pacote streamlit-extras), permitindo busca, seleção múltipla, etc. Selecionar um job mostra a mesma visualização da página de resultados.
+- **Persistência em banco SQLite**: ✅ Todos os jobs, conversas e outputs dos agentes são salvos em um banco SQLite (`optimind.db`) com 3 tabelas: `jobs`, `conversations`, `agent_outputs`.
+- **ID de job**: ✅ Cada job recebe um ID único no formato `job_{id}_{AAAAMMDD-HH:MM:SS}_{titulo}`.
+- **Integração total**: ✅ O pipeline, histórico e resultados estão totalmente integrados, com navegação fluida via sidebar funcional em todas as páginas.
+- **Filtros inteligentes**: ✅ O histórico usa o `dataframe_explorer` para filtros avançados e intuitivos.
+- **Compilação de entrada do usuário**: ✅ Campo `user_input` compila todas as mensagens que o usuário enviou durante a conversa (formato numerado).
+- **Botão "Ver Resultados"**: ✅ Aparece automaticamente após o pipeline ser concluído, permitindo navegação direta para os resultados.
+- **Interface limpa**: ✅ Expanders colapsados por padrão, remoção de botões redundantes, sidebar funcional para navegação.
+
+### 🗄️ **Estrutura do Banco de Dados SQLite (`optimind.db`)** ✅ **IMPLEMENTADO**
+
+#### Tabela `jobs` - Metadados dos Jobs
+| Campo | Tipo | Descrição | Exemplo |
+|-------|------|-----------|---------|
+| `id` | TEXT (PK) | ID único do job | `job_001_20250107-14:30:25_ProductionPlanning` |
+| `created_at` | TEXT | Data/hora de criação | `2025-01-07T14:30:25.123456` |
+| `user_input` | TEXT | **TODAS as mensagens do usuário compiladas** | `1. I want to maximize profit\n2. We have products A and B\n3. Product A costs $5` |
+| `job_title` | TEXT | Título do problema | `Production Planning` |
+| `status` | TEXT | Status do job | `Completed`, `In Progress`, `Failed` |
+| `final_message` | TEXT | Resultado final formatado | Relatório completo com solução ótima |
+
+#### Tabela `conversations` - Histórico Completo do Chat
+| Campo | Tipo | Descrição | Exemplo |
+|-------|------|-----------|---------|
+| `id` | INTEGER (PK) | ID único da mensagem | `1, 2, 3...` |
+| `job_id` | TEXT | Referência ao job | `job_001_20250107-14:30:25_ProductionPlanning` |
+| `sender` | TEXT | Quem enviou a mensagem | `user`, `assistant` |
+| `message` | TEXT | Conteúdo da mensagem | `I want to maximize profit from products A and B` |
+| `timestamp` | TEXT | Quando foi enviada | `2025-01-07T14:30:25.123456` |
+
+#### Tabela `agent_outputs` - Saídas JSON dos Agentes
+| Campo | Tipo | Descrição | Exemplo |
+|-------|------|-----------|---------|
+| `id` | INTEGER (PK) | ID único da saída | `1, 2, 3...` |
+| `job_id` | TEXT | Referência ao job | `job_001_20250107-14:30:25_ProductionPlanning` |
+| `agent_name` | TEXT | Nome do agente | `Meaning`, `Researcher`, `Mathematician`, `Formulator`, `Executor`, `Interpreter`, `Auditor` |
+| `json_output` | TEXT | Saída JSON do agente | `{"problem_type": "LP", "objective": "5*x + 3*y", ...}` |
+| `timestamp` | TEXT | Quando foi gerada | `2025-01-07T14:30:25.123456` |
+
+### 📊 **Funcionalidades de UX/UI Implementadas** ✅ **IMPLEMENTADO**
+
+1. **Sidebar Funcional**: ✅ Navegação consistente em todas as páginas (Home, New Job, Results, History) com autenticação integrada
+2. **Interface de Chat Interativa**: ✅ Conversa natural com Meaning Agent para definir problemas passo a passo
+3. **Pipeline Visual**: ✅ Mensagens de progresso de cada agente (Mathematician, Formulator, Executor, Interpreter, Auditor) com spinners individuais
+4. **Página de Resultados**: ✅ Visualização dedicada com expanders colapsados para cada agent output (JSON estruturado)
+5. **Página de Histórico**: ✅ DataFrame filtrável com `dataframe_explorer` para busca avançada e seleção de jobs
+6. **Compilação Inteligente**: ✅ Campo `user_input` compila todas as mensagens do usuário em formato numerado para contexto completo
+7. **Navegação Contextual**: ✅ Botão "Ver Resultados" aparece automaticamente após conclusão do pipeline
+8. **Interface Limpa**: ✅ Remoção de botões redundantes, informações desnecessárias (created_at), e organização visual otimizada
+
+### 🔧 **Exemplo de Filtro no Histórico** ✅ **IMPLEMENTADO**
+```python
+from streamlit_extras.dataframe_explorer import dataframe_explorer
+filtered_df = dataframe_explorer(df)
+st.dataframe(filtered_df, use_container_width=True, hide_index=True)
+if filtered_df.empty:
+    st.warning('No jobs match the selected filters.')
+    return
+job_ids = filtered_df['ID'].tolist()
+selected_id = st.selectbox('Select a job to view details:', job_ids)
+```
+
 ---
 
 ## 🏗️ 1. Arquitetura Geral

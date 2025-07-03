@@ -65,8 +65,11 @@ def create_sidebar():
     if st.sidebar.button("🚀 New Job", use_container_width=True):
         st.switch_page("pages/d_NewJob.py")
     
-    if st.sidebar.button("📊 History", use_container_width=True):
-        st.switch_page("pages/e_History.py")
+    if st.sidebar.button("📊 Results", use_container_width=True):
+        st.switch_page("pages/e_Results.py")
+    
+    if st.sidebar.button("📜 History", use_container_width=True):
+        st.switch_page("pages/f_History.py")
     
     # Logout button - clean
     st.sidebar.markdown("---")

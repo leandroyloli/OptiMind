@@ -71,4 +71,13 @@ class SchemaValidator:
 def validate_problem_output(data: Dict[str, Any]) -> Tuple[bool, Optional[str]]:
     """Quick validation function for problem output"""
     validator = SchemaValidator()
-    return validator.validate_problem(data) 
+    return validator.validate_problem(data)
+
+# Utility function to load a schema by name
+def load_schema(schema_name: str):
+    """Load a schema by name from the schemas directory."""
+    validator = SchemaValidator()
+    schema = validator.get_schema(schema_name.replace('.json', ''))
+    if schema is None:
+        raise ValueError(f"Schema '{schema_name}' not found in schemas directory.")
+    return schema 

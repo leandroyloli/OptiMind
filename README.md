@@ -7,30 +7,69 @@ O **OptiMind** é uma plataforma revolucionária que transforma descrições em 
 ## 🚀 Funcionalidades
 
 - **Interpretação Natural**: Descreva problemas de otimização em linguagem natural ✅ **IMPLEMENTADO**
-- **Pipeline Multi-Agente**: 7 agentes especializados processam cada etapa (1/7 implementado)
-- **Modelagem Automática**: Geração automática de modelos matemáticos
-- **Execução Segura**: Sandbox para execução de código Pyomo
-- **Insights Inteligentes**: Interpretação automática de resultados
-- **Interface Intuitiva**: Interface web moderna com Streamlit ✅ **IMPLEMENTADO**
+- **Chat Interativo**: Interface conversacional com Meaning Agent para definir problemas passo a passo ✅ **IMPLEMENTADO**
+- **Pipeline Multi-Agente**: 7 agentes especializados processam cada etapa ✅ **1/7 IMPLEMENTADO + SIMULATOR**
+- **Persistência Completa**: Sistema SQLite para armazenar jobs, conversas e outputs ✅ **IMPLEMENTADO**
+- **Páginas Results e History**: Visualização dedicada com filtros avançados ✅ **IMPLEMENTADO**
+- **Interface Intuitiva**: Interface web moderna com Streamlit e navegação fluida ✅ **IMPLEMENTADO**
+- **Compilação Inteligente**: Captura todas as mensagens do usuário em formato estruturado ✅ **IMPLEMENTADO**
+
+## 🗄️ Sistema de Persistência SQLite
+
+O OptiMind armazena todos os dados em um banco **SQLite** (`optimind.db`) com **3 tabelas principais**:
+
+### 📊 **1. Tabela `jobs` - Metadados dos Jobs**
+```sql
+CREATE TABLE jobs (
+    id TEXT PRIMARY KEY,           -- job_001_20250107-14:30:25_ProductionPlanning
+    created_at TEXT,               -- 2025-01-07T14:30:25.123456
+    user_input TEXT,               -- "1. I want to maximize profit\n2. We have products A and B"
+    job_title TEXT,                -- "Production Planning"
+    status TEXT,                   -- "Completed"
+    final_message TEXT             -- Resultado final formatado
+);
+```
+
+### 💬 **2. Tabela `conversations` - Histórico Completo do Chat**
+```sql
+CREATE TABLE conversations (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    job_id TEXT,                   -- Referência ao job
+    sender TEXT,                   -- "user" ou "assistant"
+    message TEXT,                  -- Conteúdo da mensagem
+    timestamp TEXT                 -- Quando foi enviada
+);
+```
+
+### 🤖 **3. Tabela `agent_outputs` - Saídas JSON dos Agentes**
+```sql
+CREATE TABLE agent_outputs (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    job_id TEXT,                   -- Referência ao job
+    agent_name TEXT,               -- "Meaning", "Researcher", "Mathematician", etc.
+    json_output TEXT,              -- Saída JSON estruturada
+    timestamp TEXT                 -- Quando foi gerada
+);
+```
 
 ## 🏗️ Arquitetura
 
 ```
 ┌─────────────────┐    ┌──────────────────┐    ┌─────────────────┐
-│   Streamlit UI  │───▶│  PraisonAI       │───▶│   Pyomo +       │
-│   (Frontend)    │    │  (Orquestrador)  │    │   Solvers       │
+│   Streamlit UI  │───▶│  Pipeline        │───▶│   SQLite DB     │
+│   (Frontend)    │    │  Multi-Agente    │    │   (Persistência)│
 └─────────────────┘    └──────────────────┘    └─────────────────┘
          │                       │                       │
          ▼                       ▼                       ▼
 ┌─────────────────┐    ┌──────────────────┐    ┌─────────────────┐
-│   Autenticação  │    │  7 Agentes       │    │   Resultados    │
-│   + Segurança   │    │  Especializados  │    │   + Insights    │
+│   Autenticação  │    │  7 Agentes       │    │   Results &     │
+│   + Sidebar     │    │  Especializados  │    │   History       │
 └─────────────────┘    └──────────────────┘    └─────────────────┘
 ```
 
 ## 🎯 Status Atual do Projeto
 
-### ✅ Blocos Concluídos (3/9)
+### ✅ Blocos Concluídos (3.5/9) - **39% do Projeto**
 
 #### Bloco 1: Fundação Básica ✅ **CONCLUÍDO**
 - Autenticação robusta com segurança completa
@@ -56,13 +95,22 @@ O **OptiMind** é uma plataforma revolucionária que transforma descrições em 
 - **Acervo de problemas real** convertido para TOML (22 problemas)
 - **Teste automatizado completo** para todos os problemas do acervo
 
-### 🔄 Próximos Blocos (6/9)
-- **Bloco 4**: Pesquisador Agent
-- **Bloco 5**: Matemático Agent
-- **Bloco 6**: Formulador Agent
-- **Bloco 7**: Executor Agent
-- **Bloco 8**: Interpretador Agent
-- **Bloco 9**: Auditor Agent
+#### Bloco 3.5: UX/UI e Persistência Completa ✅ **CONCLUÍDO**
+- **Sistema SQLite completo** com 3 tabelas estruturadas
+- **Compilação inteligente** de todas as mensagens do usuário
+- **Páginas Results e History** com filtros avançados (`dataframe_explorer`)
+- **Sidebar funcional** em todas as páginas com navegação fluida
+- **Interface otimizada** com expanders colapsados e botões contextuais
+- **Pipeline visual** com spinners individuais para cada agente
+- **Feedback do usuário implementado** com melhorias específicas
+
+### 🔄 Próximos Blocos (5.5/9) - **61% Restante**
+- **Bloco 4**: Researcher Agent (refinamento de problemas)
+- **Bloco 5**: Matemático Agent (modelagem matemática)
+- **Bloco 6**: Formulador Agent (geração de código Pyomo)
+- **Bloco 7**: Executor Agent (execução em sandbox)
+- **Bloco 8**: Interpretador Agent (análise de resultados)
+- **Bloco 9**: Auditor Agent (validação do pipeline)
 
 ## 🤖 Meaning Agent - Funcionalidades Implementadas
 
@@ -70,6 +118,7 @@ O **OptiMind** é uma plataforma revolucionária que transforma descrições em 
 - **Chat interativo**: Converse naturalmente com o agente para definir problemas
 - **Contexto de chat**: O agente mantém histórico para construir problemas passo a passo
 - **Respostas amigáveis**: Tratamento especial para saudações e mensagens casuais
+- **Compilação inteligente**: Todas as mensagens do usuário são compiladas em formato numerado
 
 ### Interpretação Inteligente
 - **Estruturação automática**: Converte descrições em JSON estruturado
@@ -103,6 +152,28 @@ Meaning Agent responde:
   "clarification": "Great! I understand your LP problem..."
 }
 ```
+
+## 📊 Páginas e Funcionalidades
+
+### 🏠 **Home Page**
+- Apresentação do OptiMind com Golden Circle (Why/How/What)
+- Casos de uso em consultoria
+- Navegação para "Start New Optimization Job"
+
+### 🚀 **New Job Page**
+- Chat interativo com Meaning Agent
+- Pipeline visual com spinners para cada agente
+- Botão contextual "Ver Resultados" após conclusão
+
+### 📊 **Results Page**
+- Visualização dedicada do job mais recente
+- Expanders colapsados para cada agent output (JSON)
+- Navegação via sidebar
+
+### 📜 **History Page**
+- DataFrame filtrável com `dataframe_explorer` 
+- Busca avançada e seleção múltipla
+- Visualização completa de qualquer job histórico
 
 ## 🧪 Testes Automatizados
 
@@ -170,6 +241,7 @@ O teste automatizado valida:
    ```toml
    [OPENAI]
    api_key = "sua-chave-openai-aqui"
+   model = "gpt-4o-mini"
    
    [USERS]
    admin_password_hash = "$2b$12$..."

@@ -4,6 +4,109 @@
 
 Este roadmap divide o desenvolvimento do OptiMind em **blocos lógicos e testáveis**, permitindo validação incremental e deploy contínuo. Cada bloco deve ser **completamente funcional** antes de avançar para o próximo.
 
+## 🚀 Atualização UX/UI e Persistência (2025-07) ✅ **COMPLETAMENTE IMPLEMENTADO**
+
+- **Novo fluxo de chat**: ✅ Usuário interage com o Meaning Agent, recebe sugestões/refinamentos do Researcher Agent, e vê mensagens de todos os agentes do pipeline no histórico do chat.
+- **Pipeline semi-manual**: ✅ Só há um clique necessário para processar o pipeline completo ("Start Optimization"), o resto é automático.
+- **Mensagens de todos os agentes**: ✅ Cada etapa do pipeline (Meaning, Researcher, Mathematician, Formulator, Executor, Interpreter, Auditor) aparece como mensagem no chat, com histórico completo.
+- **Página de resultados dedicada**: ✅ Após o processamento, o usuário é redirecionado para uma página de resultados, com expanders (toggles) **colapsados por padrão** para cada agente mostrando o JSON de saída.
+- **Página de histórico**: ✅ Mostra todos os jobs em um DataFrame filtrável (usando `dataframe_explorer` do pacote streamlit-extras), permitindo busca, seleção múltipla, etc. Selecionar um job mostra a mesma visualização da página de resultados.
+- **Persistência em banco SQLite**: ✅ Todos os jobs, conversas e outputs dos agentes são salvos em um banco SQLite (`optimind.db`) com **estrutura de 3 tabelas**.
+- **ID de job**: ✅ Cada job recebe um ID único no formato `job_{id}_{AAAAMMDD-HH:MM:SS}_{titulo}`.
+- **Integração total**: ✅ O pipeline, histórico e resultados estão totalmente integrados, com **navegação fluida via sidebar funcional em todas as páginas**.
+- **Filtros inteligentes**: ✅ O histórico usa o `dataframe_explorer` para filtros avançados e intuitivos.
+- **Compilação inteligente de entrada**: ✅ **Campo `user_input` compila TODAS as mensagens do usuário** em formato numerado.
+- **UX/UI otimizada**: ✅ Interface limpa, botões redundantes removidos, expanders colapsados, informações desnecessárias removidas.
+
+---
+
+## 📋 Bloco 3.5: UX/UI e Persistência Completa ✅ **COMPLETAMENTE IMPLEMENTADO**
+
+### 🎯 Objetivo ✅ **ALCANÇADO**
+Implementar sistema completo de persistência em SQLite, interface de usuário otimizada, e melhorias de UX/UI baseadas em feedback do usuário.
+
+### 📝 Tarefas ✅ **TODAS CONCLUÍDAS**
+
+#### 3.5.1 Sistema de Persistência SQLite ✅ **IMPLEMENTADO**
+- [x] **Banco SQLite**: Criado `optimind.db` com 3 tabelas estruturadas
+- [x] **Tabela jobs**: Metadados principais (id, created_at, user_input, job_title, status, final_message)
+- [x] **Tabela conversations**: Histórico completo de chat (job_id, sender, message, timestamp)
+- [x] **Tabela agent_outputs**: Saídas JSON dos agentes (job_id, agent_name, json_output, timestamp)
+- [x] **Funções de inserção**: `insert_job()`, `insert_conversation()`, `insert_agent_output()`
+- [x] **Funções de consulta**: `get_jobs()`, `get_conversations()`, `get_agent_outputs()`
+- [x] **Compilação de mensagens**: Função `compile_user_messages()` para agregar todas as entradas do usuário
+
+#### 3.5.2 Interface de Chat Interativa ✅ **IMPLEMENTADO**
+- [x] **Fluxo de chat interativo**: Usuário define o problema conversando com o Meaning Agent, com histórico completo de mensagens.
+- [x] **Pipeline semi-automático**: Após o Researcher Agent, um único clique ("Start Optimization") inicia o processamento completo dos agentes subsequentes.
+- [x] **Visualização de pipeline**: Todas as mensagens dos agentes (incluindo agentes downstream) aparecem no chat, preservando o trace completo.
+- [x] **Botão contextual**: "Ver Resultados" aparece automaticamente após conclusão do pipeline.
+- [x] **Spinners individuais**: Feedback visual para cada agente (Mathematician, Formulator, Executor, Interpreter, Auditor) com mensagens de progresso.
+
+#### 3.5.3 Páginas de Resultados e Histórico ✅ **IMPLEMENTADO**
+- [x] **Página de resultados dedicada**: Após o pipeline, o usuário é redirecionado para uma página de resultados, com expanders **colapsados por padrão** para cada agente mostrando o JSON de saída.
+- [x] **Histórico de jobs**: Página dedicada mostra todos os jobs em um DataFrame filtrável, com seleção para visualizar resultados completos de qualquer job.
+- [x] **Filtros inteligentes**: Uso do `dataframe_explorer` do streamlit-extras para filtros avançados, busca e seleção múltipla no histórico.
+- [x] **Navegação integrada**: Sidebar funcional em todas as páginas (Home, New Job, Results, History) com autenticação.
+
+#### 3.5.4 Melhorias de UX/UI ✅ **IMPLEMENTADO**
+- [x] **Interface limpa**: Expanders colapsados por padrão para melhor organização
+- [x] **Remoção de redundâncias**: Eliminados botões "Go to History" e "Go to Latest Result"
+- [x] **Informações otimizadas**: Removido campo "created_at" das visualizações (mantido apenas no banco)
+- [x] **Sidebar funcional**: Navegação consistente e links funcionais em todas as páginas
+- [x] **Compilação inteligente**: Campo `user_input` compila todas as mensagens do usuário em formato numerado
+- [x] **ID de job estruturado**: Formato `job_{id}_{AAAAMMDD-HH:MM:SS}_{titulo}` para rastreabilidade e organização
+
+#### 3.5.5 Feedback do Usuário Implementado ✅ **IMPLEMENTADO**
+- [x] **Feedback 4**: Botão "📊 Ver Resultados" aparece após pipeline completo
+- [x] **Feedback 5**: Sidebar com links funcionais em todas as páginas
+- [x] **Feedbacks 7-8**: Botões redundantes removidos das páginas Results/History
+- [x] **Feedbacks 11-12**: Agent outputs colapsados por padrão, campo "created_at" removido
+- [x] **Feedback 10**: Compilação correta de todas as mensagens do usuário
+
+### ✅ Critérios de Sucesso ✅ **TODOS ALCANÇADOS**
+```python
+def test_bloco_3_5():
+    # 1. Persistência SQLite funciona perfeitamente ✅
+    assert sqlite_database_created() == True
+    assert three_tables_structure_correct() == True
+    assert jobs_conversations_agent_outputs_saved() == True
+    assert user_input_compilation_works() == True
+    
+    # 2. Interface de chat completa ✅
+    assert chat_history_is_complete() == True
+    assert pipeline_runs_with_one_click() == True
+    assert all_agent_outputs_are_visible() == True
+    assert contextual_results_button_appears() == True
+    
+    # 3. Páginas Results e History funcionais ✅
+    assert results_page_has_collapsed_expanders() == True
+    assert history_page_has_dataframe_explorer() == True
+    assert navigation_via_sidebar_works() == True
+    
+    # 4. UX/UI otimizada ✅
+    assert redundant_buttons_removed() == True
+    assert created_at_field_removed_from_display() == True
+    assert sidebar_functional_all_pages() == True
+    assert user_feedback_implemented() == True
+    
+    # 5. Integração completa ✅
+    assert navigation_is_fluid() == True
+    assert session_state_is_managed() == True
+    assert job_id_format_is_correct() == True
+    assert complete_workflow_functional() == True
+```
+
+### 🚀 Resultado Alcançado ✅ **SUCESSO COMPLETO**
+- ✅ **Sistema de persistência robusto** com SQLite e 3 tabelas estruturadas
+- ✅ **Interface de usuário otimizada** com navegação fluida e UX moderna
+- ✅ **Workflow completo funcional** desde entrada até visualização de resultados
+- ✅ **Compilação inteligente** de todas as entradas do usuário
+- ✅ **Páginas Results e History** totalmente funcionais com filtros avançados
+- ✅ **Sidebar funcional** em todas as páginas com autenticação integrada
+- ✅ **Feedback do usuário implementado** com melhorias específicas solicitadas
+- ✅ **Base sólida** para implementação dos próximos agentes (Researcher, Mathematician, etc.)
+
 ---
 
 ## 📋 Bloco 1: Fundação Básica 
@@ -710,28 +813,28 @@ def test_bloco_9():
 
 ---
 
-## 📊 Resumo do Progresso
+## 📊 Resumo do Progresso Atualizado
 
-### ✅ Blocos Concluídos (3/9)
+### ✅ Blocos Concluídos (3.5/9) - **39% do Projeto**
 - **Bloco 1**: Fundação Básica ✅ **CONCLUÍDO**
 - **Bloco 2**: Interface de Entrada ✅ **CONCLUÍDO**
 - **Bloco 3**: Meaning Agent e Schemas ✅ **CONCLUÍDO**
+- **Bloco 3.5**: UX/UI e Persistência Completa ✅ **CONCLUÍDO**
 
-### 🔄 Blocos em Desenvolvimento (0/9)
-- Nenhum atualmente
-
-### 🔄 Blocos Futuros (6/9)
-- **Bloco 4**: Pesquisador Agent
+### 🔄 Blocos Futuros (5.5/9) - **61% Restante**
+- **Bloco 4**: Pesquisador Agent (Researcher Agent)
 - **Bloco 5**: Matemático Agent
 - **Bloco 6**: Formulador Agent
 - **Bloco 7**: Executor Agent
 - **Bloco 8**: Interpretador Agent
 - **Bloco 9**: Auditor Agent
 
-### 📈 Progresso Geral
-- **33% do projeto concluído** (3/9 blocos)
-- **Base sólida estabelecida** com autenticação, interface e primeiro agente
-- **Pronto para avançar** para o Pesquisador Agent (Bloco 4)
+### 📈 Progresso Geral Atualizado
+- **39% do projeto concluído** (3.5/9 blocos)
+- **Base sólida e robusta estabelecida** com autenticação, interface otimizada, persistência completa, e primeiro agente
+- **Sistema de persistência completo** com banco SQLite estruturado
+- **UX/UI moderna e funcional** com feedback do usuário implementado
+- **Pronto para avançar** para implementação dos próximos agentes
 
 ---
 
