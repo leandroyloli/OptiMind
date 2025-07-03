@@ -10,7 +10,7 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 import re
 import json
 from utils.auth import require_auth
-from utils.sidebar import create_sidebar
+from utils.sidebar import create_sidebar, clear_chat_cache
 import datetime
 from utils import db
 
@@ -200,7 +200,7 @@ def build_problem_summary_markdown(problem_data):
         return ""
     
     # Construir o markdown do summary
-    md_lines = ["### 📋 Problem Summary"]
+    md_lines = ["### 📋 Problem Summary", ""]  # Linha vazia após título
     
     # Problem type and objective
     problem_type = problem_data.get('problem_type', 'Unknown')
@@ -214,10 +214,12 @@ def build_problem_summary_markdown(problem_data):
     if objective_desc:
         md_lines.append(f"**Description:** {objective_desc}")
     
+    md_lines.append("")  # Linha vazia antes das variáveis
+    
     # Decision Variables
     decision_vars = problem_data.get('decision_variables', {})
     if decision_vars:
-        md_lines.append(f"\n**Decision Variables ({len(decision_vars)}):**")
+        md_lines.append(f"**Decision Variables ({len(decision_vars)}):**")
         for var_name, var_info in decision_vars.items():
             var_type = var_info.get('type', 'Unknown')
             var_desc = var_info.get('description', 'No description')
@@ -225,40 +227,45 @@ def build_problem_summary_markdown(problem_data):
             bounds_str = f" [{bounds[0]}, {bounds[1] if bounds[1] is not None else '∞'}]" if bounds else ""
             md_lines.append(f"• **{var_name}** ({var_type}){bounds_str}: {var_desc}")
     else:
-        md_lines.append(f"\n**Decision Variables (0):** None")
+        md_lines.append(f"**Decision Variables (0):** None")
+    
+    md_lines.append("")  # Linha vazia antes das variáveis auxiliares
     
     # Auxiliary Variables - sempre mostrar, mesmo que vazio
     auxiliary_vars = problem_data.get('auxiliary_variables', {})
     if auxiliary_vars:
-        md_lines.append(f"\n**Auxiliary Variables ({len(auxiliary_vars)}):**")
+        md_lines.append(f"**Auxiliary Variables ({len(auxiliary_vars)}):**")
         for var_name, var_info in auxiliary_vars.items():
             var_type = var_info.get('type', 'Unknown')
             var_desc = var_info.get('description', 'No description')
             equation = var_info.get('equation', 'No equation')
             md_lines.append(f"• **{var_name}** ({var_type}): {var_desc} = {equation}")
     else:
-        md_lines.append(f"\n**Auxiliary Variables (0):** None")
+        md_lines.append(f"**Auxiliary Variables (0):** None")
+    
+    md_lines.append("")  # Linha vazia antes das restrições
     
     # Constraints
     constraints = problem_data.get('constraints', [])
     if constraints:
-        md_lines.append(f"\n**Constraints ({len(constraints)}):**")
+        md_lines.append(f"**Constraints ({len(constraints)}):**")
         for i, constraint in enumerate(constraints, 1):
             expression = constraint.get('expression', 'No expression')
             description = constraint.get('description', 'No description')
             constraint_type = constraint.get('type', 'Unknown')
             md_lines.append(f"{i}. **{expression}** ({constraint_type}): {description}")
     else:
-        md_lines.append(f"\n**Constraints (0):** None")
+        md_lines.append(f"**Constraints (0):** None")
     
     # Business Context - manter apenas dados técnicos
     business_context = problem_data.get('business_context', {})
     if business_context:
         domain = business_context.get('domain', 'Unknown')
         if domain != 'Unknown':
-            md_lines.append(f"\n**Domain:** {domain}")
+            md_lines.append("")  # Linha vazia antes do domain
+            md_lines.append(f"**Domain:** {domain}")
     
-    md_lines.append("\n---")
+    md_lines.extend(["", "---", ""])  # Linhas vazias antes e depois do separador
     md_lines.append("💡 **Review the problem summary above. If everything looks correct, click 'Start Structure Analysis' to proceed.**")
     
     return '\n'.join(md_lines)
@@ -289,6 +296,10 @@ def main():
     except Exception as e:
         st.error(f"Authentication error: {str(e)}")
         st.stop()
+
+    # Detectar se esta é uma nova sessão (primeiro acesso à página ou cache limpo)
+    # Se não existe 'chat_messages' no session_state, significa que é uma nova sessão
+    is_new_session = 'chat_messages' not in st.session_state
     
     # Create sidebar
     create_sidebar()
@@ -312,6 +323,14 @@ def main():
             <span style="color: #1f77b4; font-weight: bold;">🚀 New Job</span>
         </div>
         """, unsafe_allow_html=True)
+    
+    # Adicionar botão "Start Fresh" se já existe uma conversa em andamento
+    if not is_new_session and st.session_state.get('chat_messages'):
+        col1, col2, col3 = st.columns([1, 2, 1])
+        with col2:
+            if st.button("🔄 Start Fresh (Clear Chat)", type="secondary", use_container_width=True):
+                clear_chat_cache()
+                st.rerun()
     
     # Initialize session state for chat
     if 'chat_messages' not in st.session_state:

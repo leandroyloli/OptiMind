@@ -7,7 +7,7 @@ import sys
 import os
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 from utils.auth import require_auth
-from utils.sidebar import create_sidebar
+from utils.sidebar import create_sidebar, clear_chat_cache
 
 # Page  configuration
 st.set_page_config(
@@ -112,6 +112,8 @@ def main():
     col1, col2, col3 = st.columns([1, 2, 1])
     with col2:
         if st.button("🚀 Start New Optimization Job", type="primary", use_container_width=True, key="new_job_btn"):
+            # Limpar cache antes de navegar para novo job
+            clear_chat_cache()
             st.switch_page("pages/d_NewJob.py")
     
     st.divider()

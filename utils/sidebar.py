@@ -6,6 +6,26 @@ Centralized sidebar functionality for all pages
 import streamlit as st
 from utils.auth import logout
 
+def clear_chat_cache():
+    """Limpa todo o cache relacionado ao chat e pipeline de processamento"""
+    keys_to_clear = [
+        'chat_messages',
+        'meaning_agent',
+        'researcher_agent',
+        'problem_ready',
+        'final_problem_data',
+        'refined_problem_data',
+        'pipeline_stage',
+        'pipeline_complete',
+        'current_job_id',
+        'processing_complete',
+        'optimization_results'
+    ]
+    
+    for key in keys_to_clear:
+        if key in st.session_state:
+            del st.session_state[key]
+
 def create_sidebar():
     """Creates the sidebar with user management - reusable across all pages"""
     
@@ -63,6 +83,8 @@ def create_sidebar():
         st.switch_page("pages/a_Home.py")
     
     if st.sidebar.button("🚀 New Job", use_container_width=True):
+        # Limpar cache antes de navegar para novo job
+        clear_chat_cache()
         st.switch_page("pages/d_NewJob.py")
     
     if st.sidebar.button("📊 Results", use_container_width=True):
