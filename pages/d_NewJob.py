@@ -268,7 +268,8 @@ def build_problem_summary_markdown(problem_data):
     md_lines.extend(["", "---", ""])  # Linhas vazias antes e depois do separador
     md_lines.append("💡 **Review the problem summary above. If everything looks correct, click 'Start Structure Analysis' to proceed.**")
     
-    return '\n'.join(md_lines)
+    # Juntar com duplas quebras de linha para melhor formatação no Streamlit
+    return '\n\n'.join([line for line in md_lines if line is not None])
 
 def compile_user_messages(chat_messages):
     """Compila todas as mensagens do usuário em uma string única."""
