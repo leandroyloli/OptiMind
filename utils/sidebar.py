@@ -87,9 +87,6 @@ def create_sidebar():
         clear_chat_cache()
         st.switch_page("pages/d_NewJob.py")
     
-    if st.sidebar.button("📊 Results", use_container_width=True):
-        st.switch_page("pages/e_Results.py")
-    
     if st.sidebar.button("📜 History", use_container_width=True):
         st.switch_page("pages/f_History.py")
     

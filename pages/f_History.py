@@ -14,6 +14,23 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
+# Hide default Streamlit navigation
+st.markdown("""
+<style>
+footer {visibility: hidden;}
+
+/* Hide default Streamlit sidebar navigation but keep the sidebar itself */
+section[data-testid="stSidebar"] ul[data-testid="stSidebarNav"] {
+    display: none !important;
+}
+
+/* Hide any other default navigation elements */
+[data-testid="stSidebarNav"] {
+    display: none !important;
+}
+</style>
+""", unsafe_allow_html=True)
+
 # Authentication check
 require_auth()
 

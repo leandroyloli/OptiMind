@@ -7,6 +7,23 @@ from utils.sidebar import create_sidebar
 
 st.set_page_config(page_title="User Management - OptiMind", page_icon="👤", layout="wide")
 
+# Hide default Streamlit navigation
+st.markdown("""
+<style>
+footer {visibility: hidden;}
+
+/* Hide default Streamlit sidebar navigation but keep the sidebar itself */
+section[data-testid="stSidebar"] ul[data-testid="stSidebarNav"] {
+    display: none !important;
+}
+
+/* Hide any other default navigation elements */
+[data-testid="stSidebarNav"] {
+    display: none !important;
+}
+</style>
+""", unsafe_allow_html=True)
+
 # Require authentication
 name, username = require_auth()
 
